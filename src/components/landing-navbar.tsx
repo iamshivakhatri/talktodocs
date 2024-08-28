@@ -18,17 +18,17 @@ const LandingNavbar = () => {
 
     
     return ( 
-        <nav className="bg-  p-4 flex items-center justify-between">
+        <nav className="bg-transparent  p-4 flex items-center justify-between">
             <Link href="/" className='flex items-center'>
             <div className='relative w-8 h-8 mr-4 flex items-center'>
-                <MessageSquare />
+                <MessageSquare className='text-white'/>
             </div>
-            <h1 className={cn("text-2xl font-bold", font.className)}>Chat APP</h1>
+            <h1 className={cn("text-2xl font-bold text-white", font.className)}>Chat APP</h1>
             </Link>
 
             <div>
                 <Link href={isSignedIn? "/main": "/sign-up"} className="mr-4">
-                <Button variant="outline" className="rounded-full">
+                <Button variant="price" className="rounded-full">
                 Get Started
                 </Button>
                 </Link>

@@ -1,0 +1,2 @@
+npm i drizzle-orm
+ npm i @neondatabase/serverless

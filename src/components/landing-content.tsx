@@ -80,7 +80,7 @@ const LandingContent = () => {
           Pricing
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 w-4/5 md:w-3/4 m-auto text-lg">
+        <div className="grid gap-y-3 grid-cols-1 sm:grid-cols-2 sm:gap-x-3 w-4/5 md:w-3/4 m-auto text-lg">
           {/* Basic Plan */}
           <Card className="bg-white rounded-lg p-4">
             <CardHeader>
@@ -88,7 +88,7 @@ const LandingContent = () => {
                 <div className="flex items-center">
                   <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />{" "}
                   {/* Tick Icon */}
-                  <p className="text-lg text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600">
+                  <p className="text-lg text-transparent bg-clip-text bg-teal-400">
                     Basic
                   </p>
                 </div>

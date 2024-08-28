@@ -1,2 +1,10 @@
 npm i drizzle-orm
- npm i @neondatabase/serverless
+npm i @neondatabase/serverless
+npm install drizzle-kit
+npm install pg
+npm install tsx --save-dev
+
+To push the schema: npx drizzle-kit push:pg
+To see the studio :  npx drizzle-kit studio
+
+

@@ -1,6 +1,9 @@
 "use client";
-import Image from "next/image";
-import {Button} from "@/components/ui/button";
+import LandingContent from "@/components/landing-content";
+import LandingHero from "@/components/landing-hero";
+import LandingNavbar from "@/components/landing-navbar";
+import Link from "next/link";
+
 
 
 export default function Home() {
@@ -8,10 +11,9 @@ export default function Home() {
  
   return (
     <div>
-     Landing Page
-
-
-      
+      <LandingNavbar />
+      <LandingHero />
+      <LandingContent />      
     </div>
 
    

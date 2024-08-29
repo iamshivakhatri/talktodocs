@@ -4,11 +4,10 @@ import { ToasterProvider } from "@/components/toaster-provider";
 import "./globals.css";
 import {
   ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
 } from '@clerk/nextjs'
+import Providers from "@/components/providers";
+
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,6 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
+      <Providers>
     <html lang="en">
       <body>
         <header>
@@ -37,6 +37,7 @@ export default function RootLayout({
           {children}
       </body>
     </html>
+    </Providers>
   </ClerkProvider>
   );
 }

@@ -11,12 +11,13 @@
     "db:generate": "drizzle-kit generate --dialect=postgresql --schema=src/lib/db/schema.ts --out=./drizzle",
     "db:migrate": "tsx ./src/migrate.ts",
     "studio": "dotenv -c .env npx drizzle-kit studio --url $DATABASE_URL --dialect postgresql --schema ./src/schema/*"
-
   },
   "dependencies": {
     "@clerk/nextjs": "^5.3.3",
     "@neondatabase/serverless": "^0.9.4",
     "@radix-ui/react-slot": "^1.1.0",
+    "@tanstack/react-query": "^5.52.2",
+    "aws-sdk": "^2.1685.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
@@ -27,6 +28,7 @@
     "pg": "^8.12.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-dropzone": "^14.2.3",
     "react-hot-toast": "^2.4.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",

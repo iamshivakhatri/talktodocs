@@ -7,4 +7,20 @@ npm install tsx --save-dev
 To push the schema: npx drizzle-kit push:pg
 To see the studio :  npx drizzle-kit studio
 
+npm install react-dropzone
+
+edited bucket policy and cors on aws
+
+aws sdk npm i aws-sdk
+
+aws secret key
+1. search for IAM 
+2. create a user
+don't provide user access
+attach policy directly
+check on box for amazon s3 full access
+3. Enter the user
+4. enter the security credentials
+5. create an access key
+choose local code
 

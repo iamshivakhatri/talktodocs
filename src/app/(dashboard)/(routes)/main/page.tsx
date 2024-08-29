@@ -1,7 +1,11 @@
+import FileUpload from "@/components/file-upload";
+
 const DashboardPage = () => {
     return ( <div>
-        <h1>Dashboard</h1>
-        <p>Dashboard content</p>
+        <div className="m-auto lg:max-w-2xl">
+         <FileUpload />
+        </div>
+        
     </div> );
 }
  

@@ -17,3 +17,5 @@ const Providers = ({children}: Props) =>{
         </QueryClientProvider>
     );
 }
+
+export default Providers

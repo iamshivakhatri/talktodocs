@@ -26,12 +26,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header>
-          {/* <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn> */}
         </header>
         <ToasterProvider/>
           {children}

@@ -21,5 +21,7 @@ export const messages = pgTable('messages', {
     role: userSystemEnum('role').notNull(),
 })
 
+export type DrizzleChat = typeof chats.$inferSelect;
+
 // drizzle-orm
 // drizzle-kits

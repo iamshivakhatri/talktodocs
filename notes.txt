@@ -24,3 +24,9 @@ check on box for amazon s3 full access
 5. create an access key
 choose local code
 
+npm install @pinecone-database/pinecone
+
+npm install langchain
+npm install @langchain/community
+npm i @langchain/community pdf-parse -> right one
+npm i openai-edge

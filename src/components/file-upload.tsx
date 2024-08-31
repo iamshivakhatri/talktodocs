@@ -19,7 +19,7 @@ type FileDetails = {
 
 const FileUpload = () => {
     const [uploading, setuploading] = useState(false);
-    const {mutate,isPending} = useMutation({
+    const {mutate, isPending} = useMutation({
         mutationFn: async({ file_key, file_name, }: FileDetails) => {
 
         const response = await axios.post("/api/create-chat", {
@@ -56,8 +56,8 @@ const FileUpload = () => {
                 }
                 mutate(data, {
                     onSuccess: (data) =>{
-                        console.log(data);
-                        toast.success('File uploaded successfully', data.message);
+                        console.log("Data after file upload succes", data);
+                        toast.success('File uploaded successfully');
                     },
                     onError: (error) =>{
                         console.error(error);

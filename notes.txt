@@ -28,5 +28,7 @@ npm install @pinecone-database/pinecone
 
 npm install langchain
 npm install @langchain/community
-npm i @langchain/community pdf-parse -> right one
+npm i @langchain/commu
+nity pdf-parse -> right one
 npm i openai-edge
+npm install md5

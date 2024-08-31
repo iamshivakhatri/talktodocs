@@ -1,4 +1,4 @@
-import { Pinecone,  } from '@pinecone-database/pinecone';
+import { Pinecone, PineconeRecord,  } from '@pinecone-database/pinecone';
 import dotenv from 'dotenv';
 import { downloadFromS3 } from './s3-server';
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
@@ -6,6 +6,7 @@ import {Document, RecursiveCharacterTextSplitter} from '@pinecone-database/doc-s
 import { getEmbeddings } from './embeddings';
 import md5 from 'md5';
 import { metadata } from '@/app/layout';
+import { convertToAscii } from '../utils';
 
 
 
@@ -49,9 +50,15 @@ export async function loadS3IntoPinecone(filekey: string){
   const vectors = await Promise.all(documents.flat().map(doc => embedDocument(doc)));
 
   // 4. Upload the vectors to Pinecone
+  const pineconeIndex = pc.index('chatapp')
+  console.log("Uploading to Pinecone", vectors);
+  const namespace = pineconeIndex.namespace(convertToAscii(filekey));
 
+  await namespace.upsert(vectors);
 
+  return documents[0]
 } 
+
 async function embedDocument(doc: Document){
   try{
     const embeddings = await getEmbeddings(doc.pageContent);
@@ -64,7 +71,7 @@ async function embedDocument(doc: Document){
         pageNumber: doc.metadata.pageNumber,
         text: doc.metadata.text
       }
-    }
+    } as PineconeRecord;
 
   }catch(error){
     console.error(error);

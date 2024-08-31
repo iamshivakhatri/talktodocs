@@ -18,14 +18,14 @@ export async function POST(req: Request, res:Response){
         const { file_key, file_name } = body;
         console.log("body", body);
         await loadS3IntoPinecone(file_key);
-        const chat_id = await db.insert(chats).values({
+        const chatId = await db.insert(chats).values({
             pdfName:file_name,
             pdfUrl: getS3Url(file_key),
             userId: userId,
             fileKey: file_key
         }).returning({insertedId: chats.id});
 
-        return NextResponse.json({chatId: chat_id[0].insertedId}, {status: 200});
+        return NextResponse.json({chatId: chatId[0].insertedId}, {status: 200});
 
     }catch(error){
         console.error(error);

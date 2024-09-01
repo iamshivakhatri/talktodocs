@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
+import PDFViewer from '@/components/pdf-viewer';
 
 // type Props = {
 //     params:{chatId: string; };
@@ -15,14 +16,15 @@ type Props = {
 };
 
 
-const ChatPage = async ({ params: { chat_id } }: Props) => {
+const ChatPage = async ({ params:{chatId} }: Props) => {
     const { userId }: { userId: string | null } = auth()
-    console.log("this is chaaatid ", chat_id);
   
     if (!userId) {
         return redirect("/sign-in");
       }
     const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
+
+    const currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
 
   return (
     <div className='flex max-h-screen overflow-scroll'>
@@ -30,11 +32,12 @@ const ChatPage = async ({ params: { chat_id } }: Props) => {
             
             {/* chat sidebar*/}
             <div className='flex-[1] max-w-xs '>
-                <ChatSideBar chatId={parseInt(chat_id)} chats={_chats}/>
+                <ChatSideBar chatId={parseInt(chatId)} chats={_chats}/>
             </div >
         
                 {/* PDF viewer */}
             <div className='max-h-screen p-4 overflow-scroll flex-[5]'>
+              <PDFViewer pdf_url={currentChat?.pdfUrl|| " " }/>
             
             </div>
                 {/* Chat messages component */}   

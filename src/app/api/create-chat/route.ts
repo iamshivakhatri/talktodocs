@@ -24,6 +24,7 @@ export async function POST(req: Request, res:Response){
             userId: userId,
             fileKey: file_key
         }).returning({insertedId: chats.id});
+        console.log("chatId at the backend", chatId);
 
         return NextResponse.json({chatId: chatId[0].insertedId}, {status: 200});
 

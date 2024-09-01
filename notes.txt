@@ -32,3 +32,4 @@ npm i @langchain/commu
 nity pdf-parse -> right one
 npm i openai-edge
 npm install md5
+npm install ai

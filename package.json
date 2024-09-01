@@ -13,6 +13,7 @@
     "studio": "dotenv -c .env npx drizzle-kit studio --url $DATABASE_URL --dialect postgresql --schema ./src/schema/*"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^0.0.54",
     "@clerk/nextjs": "^5.3.3",
     "@langchain/community": "^0.2.31",
     "@neondatabase/serverless": "^0.9.4",

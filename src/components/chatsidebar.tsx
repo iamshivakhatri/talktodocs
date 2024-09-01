@@ -25,15 +25,16 @@ const ChatSideBar = ({ chats, chatId }: Props) => {
       <div className="flex flex-col gap-2 mt-4">
         {chats.map((chat) => (
           <Link href={`/chat/${chat.id}`} key={chat.id}>
-            <div className="flex">
-              <MessageCircle className="w-6 h-6 mr-1 m-auto" />
-              <p
-                className={`p-2 rounded-md ${
-                  chat.id === chatId
-                    ? "bg-red-800 text-white"
-                    : "hover:bg-gray-200"
-                }`}
-              >
+            <div 
+            className={`p-2 rounded-md ${
+                chat.id === chatId
+                  ? "bg-[#ffffff43] text-white" // Selected state: Soft blue background
+                  : "hover:bg-[#ededed43]" // Hover state: Light gray background
+              }`}
+                
+                >
+            <MessageCircle className="w-6 h-6 mr-1 m-auto" />
+              <p className="text-sm truncate">
                 {chat.pdfName}
               </p>
             </div>

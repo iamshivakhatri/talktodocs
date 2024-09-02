@@ -5,7 +5,6 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import {Document, RecursiveCharacterTextSplitter} from '@pinecone-database/doc-splitter';
 import { getEmbeddings } from './embeddings';
 import md5 from 'md5';
-import { metadata } from '@/app/layout';
 import { convertToAscii } from '../utils';
 
 
@@ -18,7 +17,7 @@ const pc = new Pinecone({
 });
 
 console.log('Pinecone instance:', pc);
-const index = pc.index('quickstart' );
+
 
 type PDFPage = {
   pageContent: string;

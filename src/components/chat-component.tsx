@@ -7,11 +7,12 @@ import MessageList from "./message-list";
 import React, { useRef, useEffect } from "react";
 
 
-type Props = {};
+type Props = {chatId: number};
 
-const ChatComponent = (props: Props) => {
+const ChatComponent = ({chatId}: Props) => {
   const { input, handleInputChange, handleSubmit, messages } = useChat({
     api: "/api/chat",
+    body: { chatId },
   });
 
     // Ref to the end of the messages container

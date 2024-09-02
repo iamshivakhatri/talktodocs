@@ -34,3 +34,5 @@ npm i openai-edge
 npm install md5
 npm install ai
 npm install @ai-sdk/openai
+
+

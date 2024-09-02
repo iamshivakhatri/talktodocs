@@ -7,7 +7,13 @@ const config = new Configuration({
 const openai = new OpenAIApi(config);
 
 export async function getEmbeddings(text: string){
+
     try{
+        if (typeof text !== 'string') {
+            throw new TypeError('Input text must be a string.');
+        }
+
+        console.log("Received text:", text);
         const response = await openai.createEmbedding({
             model: 'text-embedding-3-small',
             input: text.replace(/\n/g, ' ')

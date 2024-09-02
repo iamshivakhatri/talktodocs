@@ -3,6 +3,11 @@ import { Configuration, OpenAIApi } from 'openai-edge';
 import { CoreMessage,convertToCoreMessages, streamText } from 'ai';
 import dotenv from 'dotenv';
 import { openai } from '@ai-sdk/openai';
+import { getContext } from '@/lib/context';
+import { db } from '@/lib/db';
+import { chats } from '@/lib/db/schema';
+import { eq } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
 
 export const maxDuration = 30; // 
 
@@ -17,7 +22,17 @@ export const maxDuration = 30; //
 export async function POST(req: Request) {
     try {
         // Parse the request body to get the messages array
-        const { messages } = await req.json();
+        const { messages, chatId } = await req.json();
+        const _chats = await db.select().from(chats).where(eq(chats.id, chatId))
+        const lastMessage = messages[messages.length - 1];
+        console.log("lastMessage", lastMessage);
+        if(_chats.length != 1){
+            return NextResponse.json({error: 'chat not found'}, {status: 404});
+        }
+        const fileKey = _chats[0].fileKey;
+        const context = await getContext(lastMessage.content, fileKey);
+
+ 
         console.log("messages", messages);
 
         // Ensure messages are passed correctly

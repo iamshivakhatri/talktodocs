@@ -16,7 +16,7 @@ export async function getMatchesFromEmbeddings(embeddings: number[], fileKey: st
         const namespace = index.namespace(convertToAscii(fileKey));
         console.log("namespace", namespace);
         const queryRequest = await namespace.query({
-            topK: 5,
+            topK: 3,
             vector: embeddings,
             includeMetadata: true,
         });
@@ -30,20 +30,24 @@ export async function getMatchesFromEmbeddings(embeddings: number[], fileKey: st
 
 export async function getContext(query: string, fileKey: string) {
     const queryEmbeddings = await getEmbeddings(query);
+    console.log("queryEmbeddings Embedding dimension:", queryEmbeddings.length);
+    console.log(" queryEmbeddingsSample embedding values:", queryEmbeddings.slice(0, 5));
     const matches = await getMatchesFromEmbeddings(queryEmbeddings, fileKey);
     console.log("I am working at the getContext")
     // console.log("matches", matches);
 
     const qualifyingDocs = matches.filter(
-        (match) => {
-            console.log("match", match);
-            match.score && match.score > 0.7
-        });
+        (match) => 
+            match.score && match.score > 0.5
+        );
+
+    // const qualifyingDocs = matches;
 
     type Metadata = {
         text: string,
         pageNumber: number,
     }
+    console.log("qualifyingDocs", qualifyingDocs);
 
     let docs = qualifyingDocs.map((match)=> (match.metadata as Metadata).text);
     console.log("docs", docs);

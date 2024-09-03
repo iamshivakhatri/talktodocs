@@ -1,0 +1,1 @@
+ALTER TABLE "messages" ADD COLUMN "role" "user_system_enum" NOT NULL;

@@ -61,6 +61,8 @@ export async function loadS3IntoPinecone(filekey: string){
 async function embedDocument(doc: Document){
   try{
     const embeddings = await getEmbeddings(doc.pageContent);
+    console.log("Embedding dimension:", embeddings.length);
+    console.log("Sample embedding values:", embeddings.slice(0, 5));
     const hash = md5(doc.pageContent);
 
     return {
@@ -92,7 +94,11 @@ async function prepareDocument(page: PDFPage){
   pageContent = pageContent.replace(/\n/g, ' ');
 
   //split the docs
-  const splitter = new RecursiveCharacterTextSplitter();
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+    chunkOverlap: 200
+  });
+
   const docs =  await splitter.splitDocuments([
     new Document({
       pageContent,

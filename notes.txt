@@ -54,7 +54,7 @@ go to webhook section in stripe and do test in local environment
 
 and follow instruction. download stripe cli, do login and listen to forward event to your webhook
 
-and after connecting it then you run this command stripe listen --forward-to localhost:3000/webhook
+and after connecting it then you run this command stripe listen --forward-to localhost:3000/api/webhook
 
 and after that just copy the signing secret with webhook starting with whsec_.... and paste it in .environment
 STRIPE_WEBHOOK_SIGNING_SECRET=whsec_

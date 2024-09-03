@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, PlusCircle } from "lucide-react";
+import axios from "axios";
 
 type Props = {
   chats: DrizzleChat[];
@@ -11,6 +12,20 @@ type Props = {
 };
 
 const ChatSideBar = ({chats, chatId}: Props) => {
+  const [loading, setLoading] = React.useState(false);
+
+  const handleSubscription = async()=>{
+    try{
+      setLoading(true);
+      const  response = await axios.get('/api/stripe');
+      window.location.href = response.data.url;
+
+    }catch(e){
+      console.error(e);
+    }finally{
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="w-full h-screen p-4 text-gray-200 bg-gray-900">
@@ -46,10 +61,13 @@ const ChatSideBar = ({chats, chatId}: Props) => {
             <Link href="/main">Home </Link>
             <Link href="/main">Source</Link>
 
-            
-
-
         </div>
+
+        <Button className="w-full mt-4 flex" variant="price" onClick={handleSubscription}>
+          <PlusCircle className="w-6 h-6 mr-2" />
+          <p>Upgrade</p>
+        </Button>
+        
 
       </div>
 

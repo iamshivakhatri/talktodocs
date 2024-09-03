@@ -37,10 +37,28 @@ npm install ai
 npm install @ai-sdk/openai
 
 
-Integrating the stripe
+Integrating the stripe( it is actually easy)
 
 install stripe
 npm i stripe
 create stripe app in the account
 copy stripe secret key
 create secret  api like api/stripe
+
+once api/stripe/route.ts and stripe.ts are coded, create a webhook folder inside the api
+
+just copy paste the webhook route.ts and change for database portion accordingly
+change in the middleware
+
+go to webhook section in stripe and do test in local environment
+
+and follow instruction. download stripe cli, do login and listen to forward event to your webhook
+
+and after connecting it then you run this command stripe listen --forward-to localhost:3000/webhook
+
+and after that just copy the signing secret with webhook starting with whsec_.... and paste it in .environment
+STRIPE_WEBHOOK_SIGNING_SECRET=whsec_
+and replace that webhook secret here at the event in webhook route event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SIGNING_SECRET as string);
+looks simple
+
+

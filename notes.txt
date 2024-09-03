@@ -37,3 +37,10 @@ npm install ai
 npm install @ai-sdk/openai
 
 
+Integrating the stripe
+
+install stripe
+npm i stripe
+create stripe app in the account
+copy stripe secret key
+create secret  api like api/stripe

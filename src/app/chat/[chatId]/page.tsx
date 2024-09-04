@@ -30,12 +30,12 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
-      <div className="sticky top-0 z-50  bg-gray-900 text-white h-[7vh]  border-gray-400">
+      <div className="sticky top-0 z-50  bg-gray-900 text-white  border-gray-400">
         <NavbarComponent />
       </div>
     
 
-      <div className="flex flex-grow overflow-hidden mx-auto w-4/5">
+      <div className="flex flex-grow overflow-hidden mx-auto w-full 2xl:w-4/5">
         <div className="flex w-full  h-full">
           {/* chat sidebar*/}
           <div className="flex-[1] max-w-xs ">

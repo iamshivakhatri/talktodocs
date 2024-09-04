@@ -73,3 +73,24 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes dotMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(12px);
+  }
+}
+
+.animate-dot {
+  animation: dotMove 0.6s infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}

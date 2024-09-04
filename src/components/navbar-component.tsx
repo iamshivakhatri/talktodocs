@@ -131,13 +131,16 @@ const formatTime = (seconds: number) => {
 
           </div>
         ) : (
-          <Button onClick={handleStartRecording} variant={'premium'}>
-            <Mic className='w-8 h-8 mr-2' />
+          <Button onClick={handleStartRecording} variant={'price'}>
+            <Mic className='w-4 h-4 mr-2' />
             Start Recording
           </Button>
         )}
       </div>
-      <div>
+
+      <div className='flex   gap-8'>
+       <p>Chat</p>
+       <p>Dashboard</p>
         {isSignedIn ? <UserButton afterSwitchSessionUrl='/' /> : <p>Please sign in</p>}
       </div>
     </div>

@@ -6,6 +6,7 @@ import {
   ClerkProvider,
 } from '@clerk/nextjs'
 import Providers from "@/components/providers";
+import NavbarComponent from "@/components/navbar-component";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,7 +29,17 @@ export default function RootLayout({
         <header>
         </header>
         <ToasterProvider/>
-          {children}
+        {/* <div className="flex flex-col h-screen">
+          <div className="sticky top-0 z-50 bg-gray-900 text-white border-gray-400">
+            <NavbarComponent />
+          </div>
+          <div className="flex flex-col flex-grow bg-gray-100">
+            
+          </div>
+        </div> */}
+
+        {children}
+
       </body>
     </html>
     </Providers>

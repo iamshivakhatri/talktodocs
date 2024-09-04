@@ -28,9 +28,9 @@ const ChatSideBar = ({chats, chatId}: Props) => {
   }
 
   return (
-    <div className="w-full h-screen p-4 text-gray-200 bg-gray-900">
+    <div className="w-full h-full p-4 text-gray-900 relative ">
       <Link href="/main " className=" border-dashed border-white">
-        <Button className="w-full border-dashed border-white border-2">
+        <Button className="w-full ">
           <PlusCircle className="w-6 h-6 mr-2" />
           Create new chat
         </Button>
@@ -42,8 +42,8 @@ const ChatSideBar = ({chats, chatId}: Props) => {
             <div 
             className={`flex justify-between p-2 rounded-md ${
                 chat.id === chatId
-                  ? "bg-[#ffffff43] text-white" // Selected state: Soft blue background
-                  : "hover:bg-[#ededed43]" // Hover state: Light gray background
+                  ? "bg-gray-300 text-black" // Selected state: Soft blue background
+                  : "hover:bg-gray-300 hover:bg-opacity-90 " // Hover state: Light gray background
               }`}
                 
                 >
@@ -57,12 +57,6 @@ const ChatSideBar = ({chats, chatId}: Props) => {
       </div>
 
       <div className="absolute bottom-4 left-4">
-        <div className="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
-            <Link href="/main">Home </Link>
-            <Link href="/main">Source</Link>
-
-        </div>
-
         <Button className="w-full mt-4 flex" variant="price" onClick={handleSubscription}>
           <PlusCircle className="w-6 h-6 mr-2" />
           <p>Upgrade</p>

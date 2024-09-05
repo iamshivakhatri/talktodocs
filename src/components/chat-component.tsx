@@ -43,10 +43,7 @@ const ChatComponent = ({chatId}: Props) => {
 
   return (
     <div className="flex flex-col h-full border-l-2">
-      {/* header */}
-      {/* <div className="bg-gray-900 text-white p-4">
-        <h3 className="text-xl font-bold">Chat</h3>
-      </div> */}
+
 
       {/* message list */}
       <div className="flex-1 overflow-auto p-4 bg-gray-100">
@@ -56,10 +53,7 @@ const ChatComponent = ({chatId}: Props) => {
        </div>
       </div>
 
-       {/* Empty div to help with scrolling */}
-      
 
-      {/* input form */}
       <form
         onSubmit={handleSubmit}
         className="bg-gray-100 p-4 border-t"

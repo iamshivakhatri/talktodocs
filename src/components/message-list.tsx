@@ -7,17 +7,54 @@ type Props = {
 }
 
 const MessageList = ({messages}: Props) => {
+  const handlePrompt = (text: string) => {  
+    console.log(text);
+  }
   if (!messages) return <>  </>
   return (
-    <div className="flex flex-col gap-2 px-4">
-      {messages.map((message) => (
-        <div key={message.id} className={cn('flex', {"justify-end pl-10": message.role === "user", "justify-start pr-10": message.role ==="assistant"})}>
-         <div className={cn("rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10", {"bg-gray-900 text-white": message.role === "user"})}>
-          <p>{message.content}</p>
-         </div>
+    <>
+   
+   
+      {messages.length>0 ? 
+
+        <div>
+        {messages.map((message) => (
+          <div key={message.id} className={cn('flex', {"justify-end pl-10": message.role === "user", "justify-start pr-10": message.role ==="assistant"})}>
+           <div className={cn("rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10", {"bg-gray-900 text-white": message.role === "user"})}>
+            <p>{message.content}</p>
+           </div>
+          </div>
+        ))}
         </div>
-      ))}
-    </div>
+ 
+      :
+      (
+        <div className="text-gray-900 flex items-center justify-center h-full">
+          <div className="grid grid-cols-4 gap-4 p-4">
+            <div onClick={()=>{handlePrompt("What is this document about?")}} className="text-gray-900 text-sm flex items-center justify-center
+             hover:bg-gray-200 h-28 w-28 rounded-lg shadow-md p-2 cursor-pointer">
+              What is this document about?
+            </div>
+            <div onClick={()=>{handlePrompt("Key takeaways from this document?")}} className="text-gray-900 text-sm flex items-center justify-center
+             hover:bg-gray-200 h-28 w-28 rounded-lg shadow-md p-2 cursor-pointer">
+              Key takeaways from this document?
+            </div>
+            <div onClick={()=>{handlePrompt("Who is the target audience?")}} className="text-gray-900 text-sm flex items-center justify-center
+             hover:bg-gray-200 h-28 w-28 rounded-lg shadow-md p-2 cursor-pointer">
+              Who is the target audience?
+            </div>
+            <div onClick={()=>{handlePrompt("Any actionable insights?")}} className="text-gray-900 text-sm flex items-center justify-center
+             hover:bg-gray-200 h-28 w-28 rounded-lg shadow-md p-2 cursor-pointer">
+              Any actionable insights?
+            </div>
+          </div>
+
+        </div>
+      )
+      
+      
+      }
+    </>
   )
 }
 

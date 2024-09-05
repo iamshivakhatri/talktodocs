@@ -32,5 +32,12 @@ export const userSubscriptions = pgTable('user_subscriptions', {
     stripeCurrentPeriodEnd: timestamp('stripe_current_period_end'),
 })
 
+export const summary = pgTable('summary', {
+    id: serial('id').primaryKey(),
+    chatId: integer('chat_id').references(()=> chats.id).notNull(),
+    content: text('content').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+})
+
 // drizzle-orm
 // drizzle-kits

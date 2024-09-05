@@ -25,8 +25,8 @@ const ChatComponent = ({chatId}: Props) => {
         }
     })
 
-    console.log("This is data in chat component", data);
 
+    // useChat is not only hitting the api but also handling the state of the chat like displaying the messages
   const { input, handleInputChange, handleSubmit, messages } = useChat({
     api: "/api/chat",
     body: { chatId },
@@ -38,11 +38,9 @@ const ChatComponent = ({chatId}: Props) => {
 
     // Scroll to the bottom when messages change
     useEffect(() => {
-      console.log("This is messages in useEffect", messages);
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-  console.log("This is messages in usechat", messages);
   return (
     <div className="flex flex-col h-full border-l-2">
       {/* header */}

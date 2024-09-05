@@ -43,6 +43,20 @@
       "when": 1725330722924,
       "tag": "0005_lethal_saracen",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1725482380960,
+      "tag": "0006_narrow_magik",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1725482413827,
+      "tag": "0007_chief_thunderbolt",
+      "breakpoints": true
     }
   ]
 }

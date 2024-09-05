@@ -14,9 +14,8 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
     try {
         // Parse the request body to get the messages array
-        const { chatId, messages } = await req.json();
+        const { chatId} = await req.json();
         const summary = await db.select().from(_summary).where(eq(_summary.chatId, chatId));
-        console.log("summary", summary);
         // If the summary exists, return it in the expected format
         if (summary.length > 0) {
             // Structure the content as a Message object

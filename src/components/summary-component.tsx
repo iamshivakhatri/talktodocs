@@ -27,22 +27,6 @@ const SummaryComponent = ({ chatId }: Props) => {
   const { append, messages, setMessages } = useChat({
     api: '/api/summary',
     body: { chatId },
-    
-    onResponse: async (response: Response) => {
-      if (response.ok) {
-          const data = await response.json();
-          console.log('Parsed data:', data);
-
-          // Format messages as expected by `setMessages`
-          const formattedMessage = data.messages
-
-          // // Set messages in the state
-          setMessages(formattedMessage);
-      } else {
-          console.error('Error fetching messages:', response.statusText);
-      }
-  },
-
     // Add any additional configurations if needed
   });
 
@@ -57,14 +41,31 @@ const SummaryComponent = ({ chatId }: Props) => {
 
   const effectRan = useRef(false);
 
+  const getSummary = async () => {
+    try {
+      const response = await axios.post('/api/get-summary/', {chatId});
+      const data = await response.data;
+      const summary = await data.messages;
+      
+      return summary;
+    } catch (error) {
+      console.error('Error fetching summary:', error);
+    }
+  }
+
 
 
   useEffect(() => {
-    if (!effectRan.current) {
+    const fetchSummary = async()=>{
+      const summary = await getSummary();
+          if (summary.length > 0) {
+            setMessages(summary);
+        }else{
+          sendMessage({role: 'user', content: 'Please provide the summary of the given content.',});
 
-      sendMessage({role: 'user',  content: 'Please provide the summary of the given content.',});
-      effectRan.current = true;
+        }
     }
+    fetchSummary();
 
     // Cleanup function should return void or nothing
     return () => {

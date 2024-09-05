@@ -5,6 +5,9 @@ import React, {useState} from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, PlusCircle, Ellipsis, Delete, PenTool } from "lucide-react";
 import axios from "axios";
+import { DeleteModal } from "./modals/delete-modal";
+import toast from "react-hot-toast";
+import { UploadModal } from "./modals/upload-modal";
 
 type Props = {
   chats: DrizzleChat[];
@@ -12,7 +15,12 @@ type Props = {
 };
 
 const ChatSideBar = ({chats, chatId}: Props) => {
+  const [opendelete, setOpenDelete] = useState(false);
+  const [openupload, setOpenUpload] = useState(false);
+  const [loadingdelete, setLoadingDelete] = React.useState(false);
+  const [loadingupload, setLoadingUpload] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+
 
   const [dropdownVisibleId, setDropdownVisibleId] = useState<number | null>(null);
 
@@ -35,14 +43,67 @@ const ChatSideBar = ({chats, chatId}: Props) => {
     }
   }
 
+  const onDelete = async ()=>{
+    try{
+       // Prevents navigation if it's in a link
+      console.log("This is printing from ondelete function");
+      toast.success("Chat deleted successfully");  
+
+       
+    }catch(error){
+      console.error("This is printing from ondelete function catch block", error);
+    }finally{
+      console.log("This is printing from ondelete function finally block");
+      setLoadingDelete(false);
+      setOpenDelete(false);
+      setDropdownVisibleId(null);
+       
+    
+    }
+}
+
+  const upload = async()=>{
+    try{
+      setLoadingUpload(true);
+      console.log("This is printing from upload function");
+      toast.success("Chat uploaded successfully");
+
+
+  }catch(error){
+    setLoadingUpload(false);
+    setOpenUpload(false);
+  }finally{
+    console.log("This is printing from upload function finally block");
+    setLoadingUpload(false);
+    setOpenUpload(false);
+    setDropdownVisibleId(null);
+  }
+}
+
   return (
+  <>
+
+     <DeleteModal
+        isOpen={opendelete}
+        onClose={()=> setOpenDelete(false)}
+        onConfirm={onDelete}
+        loading={loadingdelete}
+         />
+     <UploadModal
+        isOpen={openupload}
+        onClose={()=> setOpenUpload(false)}
+        onConfirm={upload}
+        loading={loadingupload}
+     />
+
     <div className="w-full h-full p-4 text-gray-900 relative ">
-      <Link href="/main " className=" border-dashed border-white">
-        <Button className="w-full ">
+    {/* href="/main "  */}
+      <div className=" border-dashed border-white">   
+        <Button className="w-full" onClick={()=>setOpenUpload(true)}>
           <PlusCircle className="w-6 h-6 mr-2" />
           Create new chat
         </Button>
-      </Link>
+      </div>
 
       <div className="flex flex-col gap-2 mt-4">
         {chats.map((chat) => (
@@ -82,11 +143,16 @@ const ChatSideBar = ({chats, chatId}: Props) => {
                     </li>
                     <li
                       className="p-2 hover:bg-gray-100 text-red-600 cursor-pointer"
-                      onClick={() => console.log('Delete clicked')}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // e.stopPropagation(); // Prevent link navigation
+                        setOpenDelete(true);
+                      }}
+
                     >
                       <div className="flex gap-x-2">
                       <Delete className="w-6 h-6 mr-2" />
-                      <p>Delete</p>
+                      <p >Delete</p>
                       </div>
                       
                     </li>
@@ -111,6 +177,7 @@ const ChatSideBar = ({chats, chatId}: Props) => {
 
 
     </div>
+  </>
   );
 };
 

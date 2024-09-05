@@ -9,7 +9,6 @@ import PDFViewer from "@/components/pdf-viewer";
 import ChatComponent from "@/components/chat-component";
 import SummaryComponent from "@/components/summary-component";
 import NavbarComponent from "@/components/navbar-component";
-
 // type Props = {
 //     params:{chatId: string; };
 // }
@@ -26,7 +25,19 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
   }
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
 
-  const currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
+
+  let currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
+  if(!currentChat){
+    currentChat = _chats[_chats.length - 1];
+    if (!currentChat) {
+      return <div>No chat found</div>;
+    }
+    chatId = currentChat.id.toString();
+    console.log("this is new chat id", chatId);
+    // router.push(`/chat/${chatId}`);
+    redirect(`/chat/${chatId}`)
+
+  }
 
   return (
     <div className="flex flex-col flex-grow bg-gray-100 h-full">

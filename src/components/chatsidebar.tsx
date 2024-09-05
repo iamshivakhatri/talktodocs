@@ -81,7 +81,7 @@ const ChatSideBar = ({chats, chatId}: Props) => {
                      
                     </li>
                     <li
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      className="p-2 hover:bg-gray-100 text-red-600 cursor-pointer"
                       onClick={() => console.log('Delete clicked')}
                     >
                       <div className="flex gap-x-2">

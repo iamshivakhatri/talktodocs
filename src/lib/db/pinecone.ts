@@ -119,11 +119,32 @@ async function prepareDocument(page: PDFPage){
 }
 
 export async function deleteFromPinecone(filekey: string){
-  console.log('Deleting from Pinecone', filekey);
-  const index = pc.index('chatapp');
-  const deletion = await index.namespace(convertToAscii(filekey)).deleteAll();;
-  console.log("Deletion from Pinecone", deletion);
-  return deletion;
+  try{
+    console.log('Deleting from Pinecone', filekey);
+    const index = pc.index('chatapp');
+
+    const namespaceExistss = await namespaceExists(index, filekey);
+    
+    if (!namespaceExistss) {
+      console.log('Namespace not found or already deleted');
+      return;
+    } else{
+      const deletion = await index.namespace(filekey).deleteAll();;
+      console.log("Deletion from Pinecone", deletion);
+    }
+ 
+  }catch(error){
+    console.error(error);
+  }
+  
+
+}
+
+async function namespaceExists(index:any, namespace:string | null) {
+  if (namespace === null) throw new Error("No namespace value provided.");
+  // Fetch the index stats and check namespaces
+  const { namespaces } = await index.describeIndexStats();
+  return namespaces.hasOwnProperty(namespace);
 }
 
 // src/lib/db/pinecone.js

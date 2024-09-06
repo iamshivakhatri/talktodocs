@@ -8,19 +8,23 @@ import axios from "axios";
 import { DeleteModal } from "./modals/delete-modal";
 import toast from "react-hot-toast";
 import { UploadModal } from "./modals/upload-modal";
+import { useRouter } from 'next/navigation';
 
 
 type Props = {
   chats: DrizzleChat[];
   chatId: number;
+  fileKey: string;
 };
 
-const ChatSideBar = ({chats, chatId}: Props) => {
+const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
+  console.log("This is fileKey in the chatSidebar", fileKey);
   const [opendelete, setOpenDelete] = useState(false);
   const [openupload, setOpenUpload] = useState(false);
   const [loadingdelete, setLoadingDelete] = React.useState(false);
   const [loadingupload, setLoadingUpload] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const router = useRouter(); // Initialize the router
 
 
   const [dropdownVisibleId, setDropdownVisibleId] = useState<number | null>(null);
@@ -46,16 +50,16 @@ const ChatSideBar = ({chats, chatId}: Props) => {
 
   const onDelete = async ()=>{
     try{
-       // Prevents navigation if it's in a link
-        console.log("This is printing from ondelete function");
-        // const file_key =  await axios.get(`/api/aws?chatId=${chatId}`);
-        const fileKey = await axios.get('/api/aws', {
-          params: { chatId: chatId }, // Sending chatId as a query parameter
-        });
-        const message = await axios.post('/api/aws', { fileKey: fileKey.data.fileKey });
-       toast.success(message.data);  
-
-       
+      setLoadingDelete(true);
+      console.log("This is printing from ondelete function with fileKey", fileKey);
+      console.log("This is the chatId in the ondelete function", chatId);
+        const message = await axios.delete('/api/aws', { data: {fileKey: fileKey} }); // this deletes the data from s3 and pinecone
+        const neonResponse = await axios.delete('/api/neon', { data: { chatId: chatId, fileKey: fileKey } });
+        console.log("This is printing from ondelete function from neonResponse", neonResponse);
+        const newChatId = chats[chats.length - 1].id;
+        console.log("This is printing from ondelete function newChatId", newChatId);
+        router.push(`/chat/${newChatId}`);
+        toast.success(message.data);   
     }catch(error){
       console.error("This is printing from ondelete function catch block", error);
     }finally{
@@ -121,10 +125,12 @@ const ChatSideBar = ({chats, chatId}: Props) => {
                 : 'hover:bg-gray-300 hover:bg-opacity-90'
             }`}
           >
-            <div className="flex items-center">
-              <MessageCircle className="w-6 h-6 mr-2" />
-              <p className="text-sm truncate">{chat.pdfName}</p>
-            </div>
+             <div className="flex items-center w-full">
+                <MessageCircle className="w-6 h-6 mr-2" />
+                <p className="text-sm w-4/6 overflow-hidden whitespace-nowrap">
+                  {chat.pdfName.length > 23 ? `${chat.pdfName.slice(0, 23)}...` : chat.pdfName}
+                </p>
+              </div>
     
             {/* Ellipsis Icon: Hidden by default, shown on hover */}
             <div className="relative">

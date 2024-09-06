@@ -23,10 +23,12 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
   if (!userId) {
     return redirect("/sign-in");
   }
-  const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
+  let _chats = await db.select().from(chats).where(eq(chats.userId, userId));
+  const fileKey = _chats[0].fileKey;
 
 
   let currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
+
   if(!currentChat){
     currentChat = _chats[_chats.length - 1];
     if (!currentChat) {
@@ -34,7 +36,9 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     }
     chatId = currentChat.id.toString();
     console.log("this is new chat id", chatId);
-    // router.push(`/chat/${chatId}`);
+   _chats = await db.select().from(chats).where(eq(chats.userId, userId));
+    
+
     redirect(`/chat/${chatId}`)
 
   }
@@ -50,7 +54,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
         <div className="flex w-full  h-full">
           {/* chat sidebar*/}
           <div className="flex-[1] max-w-xs ">
-            <ChatSideBar chatId={parseInt(chatId)} chats={_chats} />
+            <ChatSideBar chatId={parseInt(chatId)} chats={_chats} fileKey={fileKey}/>
           </div>
 
           {/* PDF viewer */}

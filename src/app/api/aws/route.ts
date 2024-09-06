@@ -8,17 +8,12 @@ import { deleteFromPinecone } from "@/lib/db/pinecone";
 
 
 
-export async function POST(req:Response, res: Response){
+export async function DELETE(req:Response, res: Response){
     try {
         const body = await req.json();
         const { fileKey } = body;
-        console.log("body", body);
-        console.log("file_key in post", fileKey);
-
-
         await deleteFromS3(fileKey);
         await deleteFromPinecone(fileKey);
-        // return new NextResponse({"file deleted successfully"}, {status: 200});
         return new NextResponse("File deleted successfully", { status: 200 });
 
    
@@ -41,8 +36,6 @@ export async function GET(req: NextRequest) {
   
       // Convert chatId to a number since chats.id expects a number
       const numericChatId = Number(chatId);
-
-
     //   Your logic to query the database using chatId
       const result = await db.select().from(chats).where(eq(chats.id, numericChatId ));
       const fileKey = result[0].fileKey;

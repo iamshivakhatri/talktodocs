@@ -24,10 +24,19 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     return redirect("/sign-in");
   }
   let _chats = await db.select().from(chats).where(eq(chats.userId, userId));
+
+  if (_chats.length === 0 || !_chats) {
+    return(
+      <div>
+        No chat found
+      </div>
+    )
+  }
   const fileKey = _chats[0].fileKey;
 
-
+// if somebody manually tries to access a chat that doesn't exist, redirect them to the last chat
   let currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
+
 
   if(!currentChat){
     currentChat = _chats[_chats.length - 1];
@@ -35,12 +44,8 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
       return <div>No chat found</div>;
     }
     chatId = currentChat.id.toString();
-    console.log("this is new chat id", chatId);
-   _chats = await db.select().from(chats).where(eq(chats.userId, userId));
-    
-
+  //  _chats = await db.select().from(chats).where(eq(chats.userId, userId)); 
     redirect(`/chat/${chatId}`)
-
   }
 
   return (

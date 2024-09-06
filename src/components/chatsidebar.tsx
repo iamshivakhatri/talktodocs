@@ -1,7 +1,7 @@
 "use client";
 import { DrizzleChat } from "@/lib/db/schema";
 import Link from "next/link";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, PlusCircle, Ellipsis, Delete, PenTool } from "lucide-react";
 import axios from "axios";
@@ -25,6 +25,13 @@ const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
   const [loadingupload, setLoadingUpload] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const router = useRouter(); // Initialize the router
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [chatList, setChatList] = useState(chats);
+
+   // Update chatList whenever the chats prop changes
+   useEffect(() => {
+    setChatList(chats);
+  }, [chats]);
 
 
   const [dropdownVisibleId, setDropdownVisibleId] = useState<number | null>(null);
@@ -51,6 +58,11 @@ const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
   const onDelete = async ()=>{
     try{
       setLoadingDelete(true);
+      if(!deleteId){
+        return;
+      }
+      console.log("We are deleting the id ", deleteId);
+      const chatId = deleteId;
       console.log("This is printing from ondelete function with fileKey", fileKey);
       console.log("This is the chatId in the ondelete function", chatId);
         const message = await axios.delete('/api/aws', { data: {fileKey: fileKey} }); // this deletes the data from s3 and pinecone
@@ -116,7 +128,7 @@ const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
       </div>
 
       <div className="flex flex-col gap-2 mt-4">
-        {chats.map((chat) => (
+        {chatList.map((chat) => (
           <Link href={`/chat/${chat.id}`} key={chat.id}>
           <div
             className={`relative flex items-center justify-between p-2 rounded-md w-full ${
@@ -158,7 +170,9 @@ const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
                       onClick={(e) => {
                         e.preventDefault();
                         // e.stopPropagation(); // Prevent link navigation
+                        setDeleteId(chat.id);
                         setOpenDelete(true);
+
                       }}
 
                     >

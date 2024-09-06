@@ -1,0 +1,113 @@
+Result from OpenAI {
+  object: 'list',
+  data: [ { object: 'embedding', index: 0, embedding: [Array] } ],
+  model: 'text-embedding-ada-002',
+  usage: { prompt_tokens: 76, total_tokens: 76 }
+}
+Embedding dimension: 1536
+Sample embedding values: [ 0.01856189, 0.0061367163, 0.010473705, -0.0012615733, 0.00096955884 ]
+TypeError: fetch failed
+    at node:internal/deps/undici/undici:12443:11
+    at async getEmbeddings (webpack-internal:///(rsc)/./src/lib/db/embeddings.ts:17:26)
+    at async embedDocument (webpack-internal:///(rsc)/./src/lib/db/pinecone.ts:77:28)
+    at async Promise.all (index 323)
+    at async loadS3IntoPinecone (webpack-internal:///(rsc)/./src/lib/db/pinecone.ts:67:21)
+    at async POST (webpack-internal:///(rsc)/./src/app/api/create-chat/route.ts:31:9)
+    at async /Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:55038
+    at async ek.execute (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:45808)
+    at async ek.handle (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:56292)
+    at async doRender (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1377:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1599:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1507:28)
+    at async DevServer.renderPageComponent (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1931:24)
+    at async DevServer.renderToResponseImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1969:32)
+    at async DevServer.pipeImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:920:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:816:17)
+    at async /Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:174:21)
+    at async handleRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:353:24)
+    at async requestHandlerImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:377:13)
+    at async Server.requestListener (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/start-server.js:141:13) {
+  cause: HeadersTimeoutError: Headers Timeout Error
+      at Timeout.onParserTimeout [as callback] (node:internal/deps/undici/undici:8942:32)
+      at Timeout.onTimeout [as _onTimeout] (node:internal/deps/undici/undici:6983:17)
+      at listOnTimeout (node:internal/timers:573:17)
+      at process.processTimers (node:internal/timers:514:7) {
+    code: 'UND_ERR_HEADERS_TIMEOUT'
+  }
+}
+TypeError: Cannot read properties of undefined (reading 'length')
+    at embedDocument (webpack-internal:///(rsc)/./src/lib/db/pinecone.ts:78:56)
+    at async Promise.all (index 323)
+    at async loadS3IntoPinecone (webpack-internal:///(rsc)/./src/lib/db/pinecone.ts:67:21)
+    at async POST (webpack-internal:///(rsc)/./src/app/api/create-chat/route.ts:31:9)
+    at async /Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:55038
+    at async ek.execute (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:45808)
+    at async ek.handle (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:56292)
+    at async doRender (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1377:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1599:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1507:28)
+    at async DevServer.renderPageComponent (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1931:24)
+    at async DevServer.renderToResponseImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1969:32)
+    at async DevServer.pipeImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:920:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:816:17)
+    at async /Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:174:21)
+    at async handleRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:353:24)
+    at async requestHandlerImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:377:13)
+    at async Server.requestListener (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/start-server.js:141:13)
+Error: Failed to embed document at embedDocument
+    at embedDocument (webpack-internal:///(rsc)/./src/lib/db/pinecone.ts:91:15)
+    at async Promise.all (index 323)
+    at async loadS3IntoPinecone (webpack-internal:///(rsc)/./src/lib/db/pinecone.ts:67:21)
+    at async POST (webpack-internal:///(rsc)/./src/app/api/create-chat/route.ts:31:9)
+    at async /Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:55038
+    at async ek.execute (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:45808)
+    at async ek.handle (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:56292)
+    at async doRender (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1377:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1599:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1507:28)
+    at async DevServer.renderPageComponent (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1931:24)
+    at async DevServer.renderToResponseImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:1969:32)
+    at async DevServer.pipeImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:920:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/base-server.js:816:17)
+    at async /Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:174:21)
+    at async handleRequest (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:353:24)
+    at async requestHandlerImpl (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/router-server.js:377:13)
+    at async Server.requestListener (/Users/shivakhatri/Documents/Proper_Projects/chat-app/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/create-chat 500 in 335734ms
+TypeError: fetch failed
+    at node:internal/deps/undici/undici:12443:11
+    at async getEmbeddings (webpack-internal:///(rsc)/./src/lib/db/embeddings.ts:17:26)
+    at async embedDocument (webpack-internal:///(rsc)/./src/lib/db/pinecone.ts:77:28)
+    at async Promise.all (index 1339) {
+  cause: HeadersTimeoutError: Headers Timeout Error
+      at Timeout.onParserTimeout [as callback] (node:internal/deps/undici/undici:8942:32)
+      at Timeout.onTimeout [as _onTimeout] (node:internal/deps/undici/undici:6983:17)
+      at listOnTimeout (node:internal/timers:573:17)
+      at process.processTimers (node:internal/timers:514:7) {
+    code: 'UND_ERR_HEADERS_TIMEOUT'
+  }
+}
+TypeError: Cannot read properties of undefined (reading 'length')
+    at embedDocument (webpack-internal:///(rsc)/./src/lib/db/pinecone.ts:78:56)
+    at async Promise.all (index 1339)
+ POST /api/get-messages 200 in 943ms
+ POST /api/get-messages 200 in 102ms
+ POST /api/get-messages 200 in 381ms
+ POST /api/get-messages 200 in 262ms
+ POST /api/get-messages 200 in 121ms
+ POST /api/get-messages 200 in 300ms
+ POST /api/get-messages 200 in 391ms
+ POST /api/get-messages 200 in 76ms
+ POST /api/get-messages 200 in 152ms

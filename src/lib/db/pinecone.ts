@@ -6,6 +6,10 @@ import {Document, RecursiveCharacterTextSplitter} from '@pinecone-database/doc-s
 import { getEmbeddings } from './embeddings';
 import md5 from 'md5';
 import { convertToAscii } from '../utils';
+import { db } from '.';
+import { eq } from "drizzle-orm";
+import { messages, chats} from "./schema";
+import { NextResponse } from 'next/server';
 
 
 
@@ -26,6 +30,8 @@ type PDFPage = {
   }
 
 }
+
+
 
 export async function loadS3IntoPinecone(filekey: string){
   console.log('Downloading s3 into file system');
@@ -110,6 +116,14 @@ async function prepareDocument(page: PDFPage){
   ]);
   return docs;
 
+}
+
+export async function deleteFromPinecone(filekey: string){
+  console.log('Deleting from Pinecone', filekey);
+  const index = pc.index('chatapp');
+  const deletion = await index.namespace(convertToAscii(filekey)).deleteAll();;
+  console.log("Deletion from Pinecone", deletion);
+  return deletion;
 }
 
 // src/lib/db/pinecone.js

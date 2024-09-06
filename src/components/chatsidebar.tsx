@@ -9,6 +9,7 @@ import { DeleteModal } from "./modals/delete-modal";
 import toast from "react-hot-toast";
 import { UploadModal } from "./modals/upload-modal";
 
+
 type Props = {
   chats: DrizzleChat[];
   chatId: number;
@@ -46,8 +47,13 @@ const ChatSideBar = ({chats, chatId}: Props) => {
   const onDelete = async ()=>{
     try{
        // Prevents navigation if it's in a link
-      console.log("This is printing from ondelete function");
-      toast.success("Chat deleted successfully");  
+        console.log("This is printing from ondelete function");
+        // const file_key =  await axios.get(`/api/aws?chatId=${chatId}`);
+        const fileKey = await axios.get('/api/aws', {
+          params: { chatId: chatId }, // Sending chatId as a query parameter
+        });
+        const message = await axios.post('/api/aws', { fileKey: fileKey.data.fileKey });
+       toast.success(message.data);  
 
        
     }catch(error){

@@ -114,7 +114,6 @@ const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
      <UploadModal
         isOpen={openupload}
         onClose={()=> setOpenUpload(false)}
-        onConfirm={upload}
         loading={loadingupload}
      />
 

@@ -16,7 +16,10 @@ type Props = {chatId: number};
 
 
 const ChatComponent = ({chatId}: Props) => {
+  const [shouldSubmit, setShouldSubmit] = React.useState(false); // New flag state
 
+  
+  
     const {data, isLoading} = useQuery({
         queryKey: ["chat", chatId],
         queryFn: async () => {
@@ -27,11 +30,20 @@ const ChatComponent = ({chatId}: Props) => {
 
 
     // useChat is not only hitting the api but also handling the state of the chat like displaying the messages
-  const { input, handleInputChange, handleSubmit, messages } = useChat({
+  const { input, handleInputChange, handleSubmit, messages, setInput } = useChat({
     api: "/api/chat",
     body: { chatId },
     initialMessages: data|| [],
   });
+
+  useEffect(() => {
+    if (shouldSubmit) {
+      handleSubmit(); // Trigger the chat submit
+      setShouldSubmit(false); // Reset the flag after submission
+      console.log("Message submitted with input: ", input);
+    }
+  }, [shouldSubmit, input]);
+
 
     // Ref to the end of the messages container
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -41,13 +53,20 @@ const ChatComponent = ({chatId}: Props) => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    // Function to handle prompt clicks from MessageList
+    const handlePromptClick = (text: string) => {
+      setInput(text); // Set the input value
+      setShouldSubmit(true); // Set the flag to trigger submission
+      console.log("Prompt clicked: in chat cpt ", text);
+    };
+
   return (
     <div className="flex flex-col h-full border-l-2">
 
 
       {/* message list */}
       <div className="flex-1 overflow-auto p-4 bg-gray-100">
-        <MessageList messages={messages} />
+        <MessageList messages={messages} onPromptClick={handlePromptClick}/>
         <div ref={messagesEndRef} >
 
        </div>

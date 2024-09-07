@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { UploadModal } from "./modals/upload-modal";
 import { useRouter } from 'next/navigation';
 import { useChat } from "@/context/chat-provider";
+import { FreeCounter } from "./free-counter";
 
 
 type Props = {
@@ -17,9 +18,10 @@ type Props = {
   chatId: number;
   fileKey: string;
   isPro: boolean;
+  numberOfMessages: number;
 };
 
-const ChatSideBar = ({chats, chatId, fileKey, isPro}: Props) => {
+const ChatSideBar = ({chats, chatId, fileKey, isPro,  numberOfMessages }: Props) => {
   const [opendelete, setOpenDelete] = useState(false);
   const [openupload, setOpenUpload] = useState(false);
   const [loadingdelete, setLoadingDelete] = React.useState(false);
@@ -199,7 +201,7 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro}: Props) => {
       </div>
 
       <div className="absolute bottom-4 left-4">
-        <Button className="w-full mt-4 flex" variant="price" disabled={isPro} onClick={handleSubscription}>
+        {/* <Button className="w-full mt-4 flex" variant="price" disabled={isPro} onClick={handleSubscription}>
           
           {isPro? <p>PRO</p> : (
             <>
@@ -209,13 +211,14 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro}: Props) => {
             
             )}
           {/* <p>Upgrade</p> */}
-        </Button>
+        {/* </Button> */} 
+        <FreeCounter numberOfMessages={numberOfMessages} isPro={isPro}/>
         
 
       </div>
 
-      {/* <FreeCounter  apiLimitCount={apiLimitCount}  isPro={isPro}
-            /> */}
+     
+          
 
 
     </div>

@@ -10,6 +10,7 @@ import ChatComponent from "@/components/chat-component";
 import SummaryComponent from "@/components/summary-component";
 import NavbarComponent from "@/components/navbar-component";
 import { checkSubscription } from "@/lib/subscription";
+import { apiLimit } from "@/lib/api-limit";
 // type Props = {
 //     params:{chatId: string; };
 // }
@@ -26,6 +27,12 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
   if (!userId) {
     return redirect("/sign-in");
   }
+
+  let numberOfMessages = await apiLimit();
+  if(!numberOfMessages){
+    numberOfMessages = 0;
+  }
+
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
 
 
@@ -70,7 +77,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
         <div className="flex w-full  h-full">
           {/* chat sidebar*/}
           <div className="hidden md:block flex-[2] lg:flex-[1] max-w-48 lg:max-w-xs ">
-            <ChatSideBar chatId={parseInt(chatId)} chats={_chats} fileKey={fileKey} isPro={isPro}/>
+            <ChatSideBar chatId={parseInt(chatId)} chats={_chats} fileKey={fileKey} isPro={isPro} numberOfMessages={numberOfMessages}/>
           </div>
 
           {/* PDF viewer */}

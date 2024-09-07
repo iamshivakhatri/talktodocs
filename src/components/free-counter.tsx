@@ -8,14 +8,16 @@ import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { checkSubscription } from "@/lib/subscription";
+import axios from "axios";
+
 
 interface FreeCounterProps {
-    apiLimitCount: number;
+    numberOfMessages: number;
     isPro: boolean;
 
 }
 
-export const FreeCounter =  ({apiLimitCount = 0, isPro=false}: FreeCounterProps) => {
+export const FreeCounter =  ({numberOfMessages = 0, isPro=false}: FreeCounterProps) => {
     const [mounted, setMounted] = useState(false);
     const proModal = useProModal();
 
@@ -29,16 +31,27 @@ export const FreeCounter =  ({apiLimitCount = 0, isPro=false}: FreeCounterProps)
 
     if(isPro) return null;
 
+    const handleSubscription = async()=>{
+        try{
+          const  response = await axios.get('/api/stripe');
+          window.location.href = response.data.url;
+    
+        }catch(e){
+          console.error(e);
+        }finally{
+        }
+      }
+
     return ( 
         <div className="px-3 ">
-            <Card className="bg-white/10 border-0">
+            <Card className="bg-black/5 border-0">
                 <CardContent className="py-6">
-                    <div className="text-center text-sm text-white mb-4">
+                    <div className="text-center text-sm text-black mb-4">
                         
-                        <p>{apiLimitCount}/{MAX_FREE_COUNTS} Free Generations</p>
-                        <Progress value={(apiLimitCount/MAX_FREE_COUNTS) * 100} max={MAX_FREE_COUNTS} className="mt-2"/>
+                        <p>{numberOfMessages}/{MAX_FREE_COUNTS} Free Generations</p>
+                        <Progress value={(numberOfMessages/MAX_FREE_COUNTS) * 100} max={MAX_FREE_COUNTS} className="mt-2"/>
                     </div>
-                    <Button onClick={proModal.onOpen} className="w-full" variant="premium" >
+                    <Button onClick={handleSubscription} className="w-full" variant="price" >
                         Upgrade
                         <Zap className="h-5 w-5 ml-2 fill-white"/>
                     </Button>

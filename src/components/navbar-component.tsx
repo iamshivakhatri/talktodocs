@@ -8,6 +8,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { checkSubscription } from "@/lib/subscription";
+import { apiLimit } from "@/lib/api-limit";
 
 
 
@@ -23,6 +24,12 @@ const NavbarComponent =async () => {
   }
   const isPro = await checkSubscription();
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
+
+  let numberOfMessages = await apiLimit();
+  if(!numberOfMessages){
+    numberOfMessages = 0;
+  }
+
   
   if (_chats.length === 0 || !_chats) {
     return(
@@ -37,7 +44,7 @@ const NavbarComponent =async () => {
   return (
     <div className='flex justify-between p-4 px-8 items-center'>
       <div>
-        <MobileSidebar chats={_chats}  isPro={isPro} />
+        <MobileSidebar chats={_chats}  isPro={isPro} numberOfMessages={numberOfMessages} />
       </div>
 
       {/* sound recorder */}

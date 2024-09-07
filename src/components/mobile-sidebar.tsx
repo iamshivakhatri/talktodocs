@@ -16,12 +16,13 @@ interface MobileSidebarProps {
     // fileKey: string;
     chats: DrizzleChat[];
     isPro: boolean;
+    numberOfMessages: number;
 
 }
 
 
 
-const MobileSidebar = ({chats, isPro}:MobileSidebarProps )=> {
+const MobileSidebar = ({chats, isPro,  numberOfMessages }:MobileSidebarProps )=> {
     const [isMounted, setIsMounted] = useState(false);
     const { chatId, fileKey } = useChat(); 
 
@@ -68,7 +69,7 @@ const MobileSidebar = ({chats, isPro}:MobileSidebarProps )=> {
         </SheetTrigger>
         <SheetContent side = "left" className="p-0 m-0">
         {/* apiLimitCount={apiLimitCount} isPro={isPro} */}
-            <ChatSideBar chats ={chats} chatId = {chatId} fileKey = {fileKey} isPro={isPro}/>
+            <ChatSideBar chats ={chats} chatId = {chatId} fileKey = {fileKey} isPro={isPro}  numberOfMessages={numberOfMessages} />
         </SheetContent>
         </Sheet>
      );

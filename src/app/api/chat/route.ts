@@ -7,9 +7,10 @@ import dotenv from 'dotenv';
 import { openai } from '@ai-sdk/openai';
 import { getContext } from '@/lib/context';
 import { db } from '@/lib/db';
-import { chats, messages as _messages } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { chats, messages as _messages, messageRecords } from '@/lib/db/schema';
+import { eq, sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 
 export const maxDuration = 30; // 
 
@@ -23,6 +24,11 @@ export const maxDuration = 30; //
 
 export async function POST(req: Request) {
     try {
+
+        const {userId}: {userId: string | null} = auth();
+        if (!userId) {
+            return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+        }
         // Parse the request body to get the messages array
         const { messages, chatId } = await req.json();
         console.log("messages in the posst", messages);
@@ -86,6 +92,27 @@ export async function POST(req: Request) {
                 content: text,
                 role: "system",
             });
+
+            const existingRecord = await db.select().from(messageRecords).where(eq(messageRecords.userId, userId))
+            console.log("existingRecord", existingRecord);
+
+            if (existingRecord.length > 0) {
+                // If record exists, update the record
+                await db.update(messageRecords)
+                    .set({
+                        numberOfMessages: sql`${messageRecords.numberOfMessages} + 1`,
+                    })
+                    .where(eq(messageRecords.userId, userId));
+                console.log("Updated existing record");
+            } else {
+                // If record does not exist, insert a new record
+                await db.insert(messageRecords).values({
+                    userId: userId,
+                    numberOfMessages: 1, // Start with 1 message
+                });
+                console.log("Inserted new record");
+            }
+
             },
             
         });

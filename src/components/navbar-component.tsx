@@ -7,6 +7,7 @@ import { chats } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { checkSubscription } from "@/lib/subscription";
 
 
 
@@ -15,10 +16,12 @@ type Props = {
 };
 
 const NavbarComponent =async () => {
+  
   const { userId }: { userId: string | null } = auth();
   if (!userId) {
     return redirect("/sign-in");
   }
+  const isPro = await checkSubscription();
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
   
   if (_chats.length === 0 || !_chats) {
@@ -34,7 +37,7 @@ const NavbarComponent =async () => {
   return (
     <div className='flex justify-between p-4 px-8 items-center'>
       <div>
-        <MobileSidebar chats={_chats} />
+        <MobileSidebar chats={_chats}  isPro={isPro} />
       </div>
 
       {/* sound recorder */}

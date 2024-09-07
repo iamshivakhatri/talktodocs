@@ -20,7 +20,7 @@ type Props = {
 
 const ChatPage = async ({ params: { chatId } }: Props) => {
   const { userId }: { userId: string | null } = auth();
-  const isPro = checkSubscription();
+  const isPro = await  checkSubscription();
 
   if (!userId) {
     return redirect("/sign-in");

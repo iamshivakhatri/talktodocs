@@ -24,6 +24,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     return redirect("/sign-in");
   }
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
+  
 
   // console.log("This is _chats after deletion", _chats);
 

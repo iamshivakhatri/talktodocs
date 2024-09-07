@@ -65,13 +65,13 @@ const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
       const chatId = deleteId;
       console.log("This is printing from ondelete function with fileKey", fileKey);
       console.log("This is the chatId in the ondelete function", chatId);
-        const message = await axios.delete('/api/aws', { data: {fileKey: fileKey} }); // this deletes the data from s3 and pinecone
-        const neonResponse = await axios.delete('/api/neon', { data: { chatId: chatId, fileKey: fileKey } });
-        console.log("This is printing from ondelete function from neonResponse", neonResponse);
-        const newChatId = chats[chats.length - 1].id;
-        console.log("This is printing from ondelete function newChatId", newChatId);
-        router.push(`/chat/${newChatId}`);
-        toast.success(message.data);   
+      const message = await axios.delete('/api/aws', { data: {fileKey: fileKey} }); // this deletes the data from s3 and pinecone
+      const neonResponse = await axios.delete('/api/neon', { data: { chatId: chatId, fileKey: fileKey } });
+      console.log("This is printing from ondelete function from neonResponse", neonResponse);
+      const newChatId = chats[chats.length - 1].id;
+      console.log("This is printing from ondelete function newChatId", newChatId);
+      router.push(`/chat/${newChatId}`);
+      toast.success(message.data);   
     }catch(error){
       console.error("This is printing from ondelete function catch block", error);
     }finally{

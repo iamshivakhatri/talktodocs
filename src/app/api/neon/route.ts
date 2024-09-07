@@ -4,13 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 export async function DELETE(req: NextRequest) {
     try{
         const body = await req.json();
-        const { chatId, fileKey } = body;
+        const { chatId } = body;
         console.log("deleting summary with chatid", chatId);
         await deleteSummary(chatId);
         console.log("deleting message with chatid", chatId);
         await deleteMessage(chatId);
-        console.log("deleting chat with filekey", fileKey, chatId);
-        await deleteChat(fileKey);
+        console.log("deleting chat with filekey",  chatId);
+        await deleteChat(chatId);
        
         return new NextResponse("File deleted successfully", { status: 200 });
 

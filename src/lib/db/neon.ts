@@ -2,11 +2,12 @@ import { eq } from "drizzle-orm";
 import { chats, messages, summary } from "./schema";
 import { db } from ".";
 
-export async function deleteChat(fileKey: string) {
+export async function deleteChat(chatId: number) {
     try {
+
         // Your logic to delete the chat
-        console.log("file_key in delete chat", fileKey);
-        const deletedUser = await db.delete(chats).where(eq(chats.fileKey, fileKey));
+        console.log("chatid in the delete chat", chatId);
+        const deletedUser = await db.delete(chats).where(eq(chats.id, chatId));
         console.log("deleted user", deletedUser);
     } catch (error) {
         console.error(error);

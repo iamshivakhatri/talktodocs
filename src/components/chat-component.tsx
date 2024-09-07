@@ -7,16 +7,35 @@ import MessageList from "./message-list";
 import React, { useRef, useEffect } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { Message } from "ai";
+import { Message} from "ai";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 
-type Props = {chatId: number};
+type Props = {
+  chatId: number,
+  isPro: boolean,
+  numberOfMessages: number
+
+};
+
+type OnFinishOptions = {
+  usage: CompletionTokenUsage;
+  finishReason: 'stop' | 'length' | 'content-filter' | 'tool-calls' | 'error' | 'other' | 'unknown';
+};
+
+type CompletionTokenUsage = {
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+};
 
 
 
 
-const ChatComponent = ({chatId}: Props) => {
+
+const ChatComponent = ({chatId, isPro, numberOfMessages}: Props) => {
   const [shouldSubmit, setShouldSubmit] = React.useState(false); // New flag state
+  
 
   
   
@@ -28,13 +47,31 @@ const ChatComponent = ({chatId}: Props) => {
         }
     })
 
+    const proModal = useProModal();
+
 
     // useChat is not only hitting the api but also handling the state of the chat like displaying the messages
   const { input, handleInputChange, handleSubmit, messages, setInput } = useChat({
     api: "/api/chat",
     body: { chatId },
     initialMessages: data|| [],
+    onResponse: (response) => {
+      console.log("API response while creating a chat:", response);
+      if (response.status !== 200) {
+          proModal.onOpen();
+          console.error("Error with the API call:", response);
+          return;
+      }
+  },
+
+
+
+
+
   });
+
+
+
 
   useEffect(() => {
     if (shouldSubmit) {

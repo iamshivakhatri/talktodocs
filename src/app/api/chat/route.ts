@@ -12,6 +12,9 @@ import { eq, sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 
+import { checkSubscription } from "@/lib/subscription";
+import { apiLimit } from "@/lib/api-limit";
+
 export const maxDuration = 30; // 
 
 // dotenv.config();
@@ -23,12 +26,26 @@ export const maxDuration = 30; //
 // const openai = new OpenAIApi(config);
 
 export async function POST(req: Request) {
+    const isPro = await  checkSubscription();
+    let numberOfMessages = await apiLimit();
+    if(!numberOfMessages){
+      numberOfMessages = 0;
+    }
     try {
 
         const {userId}: {userId: string | null} = auth();
         if (!userId) {
             return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+
+
         }
+
+        if (!isPro && numberOfMessages >= 3) {
+            console.log("Exceeded free usage limit");
+            return NextResponse.json({error: 'Exceeded free usage limit'}, {status: 402});
+        }
+
+
         // Parse the request body to get the messages array
         const { messages, chatId } = await req.json();
         console.log("messages in the posst", messages);
@@ -74,6 +91,10 @@ export async function POST(req: Request) {
             content: lastMessage.content,
             role: "user",
         });
+
+        
+
+
 
 
 

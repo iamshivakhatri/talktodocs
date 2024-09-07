@@ -11,6 +11,7 @@ import { UploadModal } from "./modals/upload-modal";
 import { useRouter } from 'next/navigation';
 import { useChat } from "@/context/chat-provider";
 import { FreeCounter } from "./free-counter";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 
 type Props = {
@@ -32,8 +33,10 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro,  numberOfMessages }: Props)
   const [chatList, setChatList] = useState(chats);
   const {setFileKey, setChatId} = useChat();
 
-  setFileKey(fileKey);
-  setChatId(chatId);
+  useEffect(() => {
+    setFileKey(fileKey);
+    setChatId(chatId);
+  }, [fileKey, chatId, setFileKey, setChatId]);
 
   console.log("this is ispro from chatsidebar", isPro);
 
@@ -111,6 +114,26 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro,  numberOfMessages }: Props)
   }
 }
 
+const proModal = useProModal();
+
+const handleUpload = () => {
+  if (!isPro && numberOfMessages >= 3) {
+    proModal.onOpen();
+  } else {
+    setOpenUpload(true);
+  }
+}
+
+
+
+// useEffect(() => {
+//   if (!isPro && numberOfMessages >= 3) {
+//     proModal.onOpen();
+//     console.log("new for  modal");
+//   }
+// }, [isPro, numberOfMessages]);
+
+
   return (
   <>
 
@@ -119,6 +142,7 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro,  numberOfMessages }: Props)
         onClose={()=> setOpenDelete(false)}
         onConfirm={onDelete}
         loading={loadingdelete}
+        
          />
      <UploadModal
         isOpen={openupload}
@@ -129,7 +153,9 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro,  numberOfMessages }: Props)
     <div className="w-full h-full p-4 text-gray-900 relative ">
     {/* href="/main "  */}
       <div className=" border-dashed border-white">   
-        <Button className="w-full" onClick={()=>setOpenUpload(true)}>
+        <Button className="w-full" onClick={()=> handleUpload() }>
+            {/* // setOpenUpload(true) */}
+         
           <PlusCircle className="w-6 h-6 mr-2" />
           Create new chat
         </Button>

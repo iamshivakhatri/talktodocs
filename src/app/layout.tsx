@@ -8,6 +8,7 @@ import {
 import Providers from "@/components/providers";
 import NavbarComponent from "@/components/navbar-component";
 import { ChatProvider } from "@/context/chat-provider";
+import { ModalProvider } from "@/providers/modal-provider";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -30,6 +31,7 @@ export default function RootLayout({
       <ChatProvider>
         <header>
         </header>
+        <ModalProvider/>
         <ToasterProvider/>
         {/* <div className="flex flex-col h-screen">
           <div className="sticky top-0 z-50 bg-gray-900 text-white border-gray-400">

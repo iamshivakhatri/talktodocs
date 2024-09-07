@@ -12,10 +12,15 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { uploadToS3 } from "@/lib/s3";
 
+// import { checkSubscription } from "@/lib/subscription";
+// import { apiLimit } from "@/lib/api-limit";
+import { useProModal } from "@/hooks/use-pro-modal";
+
 interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
   loading: boolean;
+
 }
 
 type FileDetails = {
@@ -27,7 +32,14 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   isOpen,
   onClose,
   loading,
+
 }) => {
+
+  // const isPro = await  checkSubscription();
+  // let numberOfMessages = await apiLimit();
+
+
+
   const [isMounted, setIsmounted] = useState(false);
   const [uploading, setUploading] = useState(false);
   const router = useRouter();

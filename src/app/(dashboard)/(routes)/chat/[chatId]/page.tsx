@@ -33,6 +33,8 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     numberOfMessages = 0;
   }
 
+
+
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
 
 
@@ -87,7 +89,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
             </div> */}
           {/* Chat messages component */}
           <div className="flex-[5] lg:flex-[5] border-1-4 border-1-slate-200">
-            <ChatComponent chatId={parseInt(chatId)} />
+            <ChatComponent chatId={parseInt(chatId)} isPro={isPro} numberOfMessages={numberOfMessages}/>
           </div>
 
           <div className="hidden sm:block flex-[4] lg:flex-[4] h-full p-4 bg-gray-100 border-l-2">

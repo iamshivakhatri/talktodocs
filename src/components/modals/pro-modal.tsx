@@ -2,19 +2,17 @@
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+import { useProModal } from "@/hooks/use-pro-modal";
 
-interface SubscribeModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  loading: boolean;
-}
+// interface ProModalProps {
+//   isOpen: boolean;
+//   onClose: () => void;
+//   loading: boolean;
+// }
 
-export const SubscribeModal: React.FC<SubscribeModalProps> = ({
-  isOpen,
-  onClose,
-  loading,
-}) => {
+export const ProModal = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const proModal = useProModal();
 
   useEffect(() => {
     setIsMounted(true);
@@ -26,18 +24,18 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({
     <Modal
       title="Upgrade to Pro"
       description="Subscribe now to unlock unlimited conversations and advanced features!"
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen={proModal.isOpen}
+      onClose={proModal.onClose}
     >
       <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-        <Button disabled={loading} variant={"outline"} onClick={onClose}>
+        <Button variant={"outline"} onClick={proModal.onClose}>
           Cancel
         </Button>
 
-        <Button disabled={loading} variant={"price"} onClick={() => {
+        <Button variant={"price"} onClick={() => {
           // Add your subscription logic here
           console.log("Redirecting to subscription page...");
-          onClose();
+          proModal.onClose();
         }}>
           Subscribe Now
         </Button>

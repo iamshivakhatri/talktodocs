@@ -1,23 +1,20 @@
-// "use client";
+"use client";
 
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { ProModal } from "@/components/modals/pro-modal";
 
+export const ModalProvider = () => {
+    const [isMounted, setIsMounted] = useState(false);
 
-// import { DeleteModal } from "@/components/modals/delete-modal";
+    useEffect(()=>{
+        setIsMounted(true);
+    })
 
-// export const ModalProvider = ()=>{
-//     const [isMounted, setIsmounted] = useState(false);
+    if(!isMounted) return null;
 
-//     useEffect(()=>{
-//         setIsmounted(true);
-//     },[]);
-
-//     if (!isMounted) return null;
-
-//     return(
-//         <>
-//         <DeleteModal />
-//         </>
-//     );
-
-// };
+    return (
+       <>
+       <ProModal />
+       </>
+    )
+ }

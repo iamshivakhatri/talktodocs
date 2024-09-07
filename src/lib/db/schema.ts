@@ -39,5 +39,11 @@ export const summary = pgTable('summary', {
     createdAt: timestamp('created_at').notNull().defaultNow(),
 })
 
+export const messageRecords = pgTable('message_records', {
+    id: serial('id').primaryKey(),
+    userId: varchar('user_id', { length: 256 }).notNull(),
+    numberOfMessages: integer('number_of_messages').notNull(),
+  });
+
 // drizzle-orm
 // drizzle-kits

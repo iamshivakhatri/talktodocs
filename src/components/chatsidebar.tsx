@@ -20,7 +20,6 @@ type Props = {
 };
 
 const ChatSideBar = ({chats, chatId, fileKey, isPro}: Props) => {
-  console.log("This is fileKey in the chatSidebar", fileKey);
   const [opendelete, setOpenDelete] = useState(false);
   const [openupload, setOpenUpload] = useState(false);
   const [loadingdelete, setLoadingDelete] = React.useState(false);
@@ -29,11 +28,12 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro}: Props) => {
   const router = useRouter(); // Initialize the router
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [chatList, setChatList] = useState(chats);
-
   const {setFileKey, setChatId} = useChat();
 
   setFileKey(fileKey);
   setChatId(chatId);
+
+  console.log("this is ispro from chatsidebar", isPro);
 
    // Update chatList whenever the chats prop changes
    useEffect(() => {
@@ -213,6 +213,9 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro}: Props) => {
         
 
       </div>
+
+      {/* <FreeCounter  apiLimitCount={apiLimitCount}  isPro={isPro}
+            /> */}
 
 
     </div>

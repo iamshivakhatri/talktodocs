@@ -20,6 +20,7 @@ type Props = {
 
 const ChatPage = async ({ params: { chatId } }: Props) => {
   const { userId }: { userId: string | null } = auth();
+  console.log("this is userId", userId);  
   const isPro = await  checkSubscription();
 
   if (!userId) {

@@ -9,6 +9,7 @@ import PDFViewer from "@/components/pdf-viewer";
 import ChatComponent from "@/components/chat-component";
 import SummaryComponent from "@/components/summary-component";
 import NavbarComponent from "@/components/navbar-component";
+import { checkSubscription } from "@/lib/subscription";
 // type Props = {
 //     params:{chatId: string; };
 // }
@@ -19,6 +20,7 @@ type Props = {
 
 const ChatPage = async ({ params: { chatId } }: Props) => {
   const { userId }: { userId: string | null } = auth();
+  const isPro = checkSubscription();
 
   if (!userId) {
     return redirect("/sign-in");
@@ -67,7 +69,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
         <div className="flex w-full  h-full">
           {/* chat sidebar*/}
           <div className="hidden md:block flex-[2] lg:flex-[1] max-w-48 lg:max-w-xs ">
-            <ChatSideBar chatId={parseInt(chatId)} chats={_chats} fileKey={fileKey}/>
+            <ChatSideBar chatId={parseInt(chatId)} chats={_chats} fileKey={fileKey} isPro={isPro}/>
           </div>
 
           {/* PDF viewer */}

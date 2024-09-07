@@ -16,9 +16,10 @@ type Props = {
   chats: DrizzleChat[];
   chatId: number;
   fileKey: string;
+  isPro: boolean;
 };
 
-const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
+const ChatSideBar = ({chats, chatId, fileKey, isPro}: Props) => {
   console.log("This is fileKey in the chatSidebar", fileKey);
   const [opendelete, setOpenDelete] = useState(false);
   const [openupload, setOpenUpload] = useState(false);
@@ -198,9 +199,16 @@ const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
       </div>
 
       <div className="absolute bottom-4 left-4">
-        <Button className="w-full mt-4 flex" variant="price" onClick={handleSubscription}>
-          <PlusCircle className="w-6 h-6 mr-2" />
-          <p>Upgrade</p>
+        <Button className="w-full mt-4 flex" variant="price" disabled={isPro} onClick={handleSubscription}>
+          
+          {isPro? <p>PRO</p> : (
+            <>
+                <PlusCircle className="w-6 h-6 mr-2" />
+                <p>Upgrade</p>
+            </>
+            
+            )}
+          {/* <p>Upgrade</p> */}
         </Button>
         
 

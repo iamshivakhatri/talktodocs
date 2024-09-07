@@ -81,11 +81,11 @@ const SummaryComponent = ({ chatId }: Props) => {
 
 
   return (
-    <div className="bg-gray-100 flex flex-col gap-4 p-6 h-full justify-around">
+    <div className="bg-gray-100 flex flex-col gap-4 p-2 lg:p-4 h-full justify-around">
       {/* Summary Section */}
-      <div className="p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer h-1/2 overflow-scroll">
+      <div className="p-2 lg:p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer h-1/2 overflow-scroll">
         <h2 className="text-lg font-semibold text-gray-800 mb-2">Summary</h2>
-        <div className="text-gray-600">
+        <div className="text-gray-900 text-sm">
 
         {messages &&  messages.map((message) => (
             (message.role==="user")?  null  : 
@@ -101,9 +101,9 @@ const SummaryComponent = ({ chatId }: Props) => {
       </div>
 
       {/* Related Information Section */}
-      <div className="p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer h-1/2 scroll-auto">
+      <div className="p-2 lg:p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer h-1/2 scroll-auto">
         <h2 className="text-lg font-semibold text-gray-800 mb-2">Related Information</h2>
-        <p className="text-gray-600">
+        <p className="text-gray-900 text-sm">
           {/* Placeholder text, replace with actual related information */}
           Here is some related information or links that provide additional context or resources.
         </p>

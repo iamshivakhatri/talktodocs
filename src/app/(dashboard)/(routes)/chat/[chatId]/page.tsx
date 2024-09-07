@@ -24,7 +24,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     return redirect("/sign-in");
   }
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
-  
+
 
   // console.log("This is _chats after deletion", _chats);
 
@@ -35,7 +35,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
       </div>
     )
   }
-  const fileKey = _chats[0].fileKey;
+  // const fileKey = _chats[0].fileKey;
 
 // if somebody manually tries to access a chat that doesn't exist, redirect them to the last chat
   let currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
@@ -50,18 +50,23 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
   //  _chats = await db.select().from(chats).where(eq(chats.userId, userId)); 
     redirect(`/chat/${chatId}`)
   }
+  const fileKey = currentChat.fileKey;
+
+  console.log("this is filekey selected in chatpage", fileKey);
+  console.log("this is chatId selected in chatpage", chatId);
 
   return (
-    <div className="flex flex-col flex-grow bg-gray-100 h-full">
-      <div className="sticky top-0 z-50  bg-gray-900 text-white  border-gray-400">
+    // <div className="flex flex-col flex-grow bg-gray-100 h-full">
+      <>
+      {/* <div className="sticky top-0 z-50  bg-gray-900 text-white  border-gray-400">
         <NavbarComponent />
       </div>
-    
+     */}
 
       <div className="flex flex-grow overflow-hidden mx-auto w-full 2xl:w-4/5">
         <div className="flex w-full  h-full">
           {/* chat sidebar*/}
-          <div className="flex-[1] max-w-xs ">
+          <div className="hidden md:block flex-[2] lg:flex-[1] max-w-48 lg:max-w-xs ">
             <ChatSideBar chatId={parseInt(chatId)} chats={_chats} fileKey={fileKey}/>
           </div>
 
@@ -71,16 +76,17 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
             
             </div> */}
           {/* Chat messages component */}
-          <div className="flex-[5] border-1-4 border-1-slate-200">
+          <div className="flex-[5] lg:flex-[5] border-1-4 border-1-slate-200">
             <ChatComponent chatId={parseInt(chatId)} />
           </div>
 
-          <div className="flex-[4] h-full p-4 bg-gray-100 border-l-2">
+          <div className="hidden sm:block flex-[4] lg:flex-[4] h-full p-4 bg-gray-100 border-l-2">
             <SummaryComponent chatId={parseInt(chatId)} />
           </div>
         </div>
       </div>
-    </div>
+      </>
+    // </div>
   );
 };
 

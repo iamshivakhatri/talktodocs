@@ -40,7 +40,6 @@ const ChatComponent = ({chatId}: Props) => {
     if (shouldSubmit) {
       handleSubmit(); // Trigger the chat submit
       setShouldSubmit(false); // Reset the flag after submission
-      console.log("Message submitted with input: ", input);
     }
   }, [shouldSubmit, input]);
 
@@ -57,7 +56,6 @@ const ChatComponent = ({chatId}: Props) => {
     const handlePromptClick = (text: string) => {
       setInput(text); // Set the input value
       setShouldSubmit(true); // Set the flag to trigger submission
-      console.log("Prompt clicked: in chat cpt ", text);
     };
 
   return (

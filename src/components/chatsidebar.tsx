@@ -9,6 +9,7 @@ import { DeleteModal } from "./modals/delete-modal";
 import toast from "react-hot-toast";
 import { UploadModal } from "./modals/upload-modal";
 import { useRouter } from 'next/navigation';
+import { useChat } from "@/context/chat-provider";
 
 
 type Props = {
@@ -27,6 +28,11 @@ const ChatSideBar = ({chats, chatId, fileKey}: Props) => {
   const router = useRouter(); // Initialize the router
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [chatList, setChatList] = useState(chats);
+
+  const {setFileKey, setChatId} = useChat();
+
+  setFileKey(fileKey);
+  setChatId(chatId);
 
    // Update chatList whenever the chats prop changes
    useEffect(() => {

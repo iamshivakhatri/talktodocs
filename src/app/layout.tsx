@@ -7,6 +7,7 @@ import {
 } from '@clerk/nextjs'
 import Providers from "@/components/providers";
 import NavbarComponent from "@/components/navbar-component";
+import { ChatProvider } from "@/context/chat-provider";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,6 +27,7 @@ export default function RootLayout({
       <Providers>
     <html lang="en">
       <body>
+      <ChatProvider>
         <header>
         </header>
         <ToasterProvider/>
@@ -39,7 +41,7 @@ export default function RootLayout({
         </div> */}
 
         {children}
-
+      </ChatProvider>
       </body>
     </html>
     </Providers>

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-
+import axios from 'axios';
 import { Mic, PauseCircle, StopCircle, PlayCircle } from 'lucide-react';
 
 type Props = {};
@@ -10,7 +10,10 @@ const RecordSound = (props: Props) => {
     const [isRecording, setIsRecording] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
+    const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioChunksRef = useRef<Blob[]>([]);
 
     const {
         transcript,
@@ -43,26 +46,90 @@ const RecordSound = (props: Props) => {
         return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     };
 
-    const handleStartRecording = () => {
-        SpeechRecognition.startListening({ continuous: true });
+    const handleStartRecording = async () => {
         setIsRecording(true);
         setIsPaused(false);
+        resetTranscript();
+        
+        SpeechRecognition.startListening({ continuous: true });
+
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+
+        mediaRecorder.ondataavailable = (event) => {
+            audioChunksRef.current.push(event.data);
+        };
+
+        mediaRecorder.start();
     };
 
     const handlePauseRecording = () => {
         if (listening) {
             SpeechRecognition.stopListening();
             setIsPaused(true);
+            mediaRecorderRef.current?.pause();
         } else {
             SpeechRecognition.startListening({ continuous: true });
             setIsPaused(false);
+            mediaRecorderRef.current?.resume();
         }
     };
 
-    const handleStopRecording = () => {
+    const handleStopRecording = async () => {
         SpeechRecognition.stopListening();
         setIsRecording(false);
         setIsPaused(false);
+        mediaRecorderRef.current?.stop();
+
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mpeg' });
+        setAudioBlob(audioBlob);
+
+        // Upload to AssemblyAI
+        const formData = new FormData();
+        formData.append('audio', audioBlob, 'audio.mp3');
+
+        try {
+            const response = await axios.post('https://api.assemblyai.com/v2/upload', formData, {
+                headers: {
+                    'authorization': 'your-assemblyai-api-key',  // Replace with your AssemblyAI API key
+                },
+            });
+
+            const transcriptResponse = await axios.post(
+                'https://api.assemblyai.com/v2/transcript',
+                {
+                    audio_url: response.data.upload_url,
+                },
+                {
+                    headers: {
+                        'authorization': 'your-assemblyai-api-key',
+                    },
+                }
+            );
+
+            const pollingEndpoint = `https://api.assemblyai.com/v2/transcript/${transcriptResponse.data.id}`;
+
+            // Polling for the transcript
+            const getTranscript = async () => {
+                const res = await axios.get(pollingEndpoint, {
+                    headers: {
+                        'authorization': 'your-assemblyai-api-key',
+                    },
+                });
+
+                if (res.data.status === 'completed') {
+                    setTranscript(res.data.text);
+                    setAudioBlob(null);  // Clear the blob after transcription
+                } else {
+                    setTimeout(getTranscript, 5000);  // Retry after 5 seconds
+                }
+            };
+
+            getTranscript();
+        } catch (error) {
+            console.error('Error uploading audio to AssemblyAI:', error);
+        }
     };
 
     if (!browserSupportsSpeechRecognition) {

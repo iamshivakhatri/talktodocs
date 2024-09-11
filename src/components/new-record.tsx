@@ -12,6 +12,8 @@ const RecordAndPlayAudio: React.FC = () => {
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
 
+    
+
     const handleStartRecording = async () => {
         setIsRecording(true);
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -58,9 +60,10 @@ const RecordAndPlayAudio: React.FC = () => {
             });
 
             console.log('Response from the api.:', response.data);
-
-            // const { mp3Url } = response.data;
-            // setAudioUrl(mp3Url); // Update with MP3 URL
+            const mp3data = response.data;
+            console.log('Data from the api.:', mp3data.filepath);
+            
+    
         } catch (error) {
             console.error('Error uploading audio:', error);
         }

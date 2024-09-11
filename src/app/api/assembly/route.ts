@@ -4,6 +4,9 @@ import path from 'path';
 import crypto from 'crypto';
 import ffmpeg from 'fluent-ffmpeg';
 import { Readable } from 'stream';
+import { send } from 'process';
+import { AssemblyAI } from 'assemblyai';
+
 
 function generateUniqueFilename(originalFilename: string, extension: string = '.mp3'): string {
   const timestamp = Date.now();
@@ -11,6 +14,18 @@ function generateUniqueFilename(originalFilename: string, extension: string = '.
   return `${timestamp}-${randomString}${extension}`;
 }
 
+async function sendAssemblyAI(publicUrl: string) {
+    const client = new AssemblyAI({
+        apiKey: '0481ff5fea9141c5928452a36e92f85e',
+    });
+    const FILE_URL = publicUrl;
+    const data = {
+        audio: FILE_URL
+      }
+    const transcript = await client.transcripts.transcribe(data);
+    console.log(transcript.text);
+
+}
 export async function POST(req: NextRequest) {
   if (!req.body) {
     return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
@@ -52,7 +67,9 @@ export async function POST(req: NextRequest) {
     // Delete the temporary file
     await unlink(tempFilepath);
 
-    const publicUrl = `/uploads/${mp3Filename}`;
+    const publicUrl = `public/uploads/${mp3Filename}`;
+
+    await sendAssemblyAI(publicUrl);
 
     return NextResponse.json({ 
       message: 'File uploaded and converted to MP3 successfully',

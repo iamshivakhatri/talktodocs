@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
+import { writeFile, unlink } from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
+import ffmpeg from 'fluent-ffmpeg';
+import { Readable } from 'stream';
 
-function generateUniqueFilename(originalFilename: string): string {
+function generateUniqueFilename(originalFilename: string, extension: string = '.mp3'): string {
   const timestamp = Date.now();
   const randomString = crypto.randomBytes(8).toString('hex');
-  const extension = path.extname(originalFilename);
   return `${timestamp}-${randomString}${extension}`;
 }
 
@@ -24,27 +25,44 @@ export async function POST(req: NextRequest) {
 
   const buffer = await file.arrayBuffer();
   const originalFilename = file.name;
-  const uniqueFilename = generateUniqueFilename(originalFilename);
-  const filepath = path.join(process.cwd(), 'public', 'uploads', uniqueFilename);
+  const tempFilename = generateUniqueFilename(originalFilename, path.extname(originalFilename));
+  const mp3Filename = generateUniqueFilename(originalFilename, '.mp3');
+  const tempFilepath = path.join(process.cwd(), 'public', 'uploads', tempFilename);
+  const mp3Filepath = path.join(process.cwd(), 'public', 'uploads', mp3Filename);
 
   try {
-    await writeFile(filepath, Buffer.from(buffer));
-    
-    // Here you would typically process the audio file
-    // For example, convert it to MP3, transcribe it, etc.
-    // For now, we'll just return a success message with the file path
+    // Save the original file
+    await writeFile(tempFilepath, Buffer.from(buffer));
 
-    const publicUrl = `/uploads/${uniqueFilename}`;
+    // Convert to MP3
+    await new Promise((resolve, reject) => {
+      ffmpeg(tempFilepath)
+        .toFormat('mp3')
+        .on('error', (err) => {
+          console.error('An error occurred: ' + err.message);
+          reject(err);
+        })
+        .on('end', () => {
+          console.log('Processing finished !');
+          resolve(null);
+        })
+        .save(mp3Filepath);
+    });
+
+    // Delete the temporary file
+    await unlink(tempFilepath);
+
+    const publicUrl = `/uploads/${mp3Filename}`;
 
     return NextResponse.json({ 
-      message: 'File uploaded successfully',
+      message: 'File uploaded and converted to MP3 successfully',
       filepath: publicUrl,
       originalFilename: originalFilename,
-      uniqueFilename: uniqueFilename
+      uniqueFilename: mp3Filename
     }, { status: 200 });
   } catch (error) {
-    console.error('Error saving file:', error);
-    return NextResponse.json({ error: 'Error saving the file' }, { status: 500 });
+    console.error('Error processing file:', error);
+    return NextResponse.json({ error: 'Error processing the file' }, { status: 500 });
   }
 }
 

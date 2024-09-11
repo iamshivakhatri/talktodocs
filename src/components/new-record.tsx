@@ -48,7 +48,7 @@ const RecordAndPlayAudio: React.FC = () => {
     const uploadAudio = async (blob: Blob) => {
 
         const formData = new FormData();
-        formData.append('file', blob, 'recorded_audio.webm');
+        formData.append('audio', blob, 'recorded_audio.webm');
 
         try {
             const response = await axios.post('/api/assembly', formData, {

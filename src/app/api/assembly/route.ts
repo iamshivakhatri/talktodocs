@@ -8,6 +8,7 @@ import { send } from 'process';
 import { AssemblyAI } from 'assemblyai';
 
 
+
 function generateUniqueFilename(originalFilename: string, extension: string = '.mp3'): string {
   const timestamp = Date.now();
   const randomString = crypto.randomBytes(8).toString('hex');
@@ -15,8 +16,12 @@ function generateUniqueFilename(originalFilename: string, extension: string = '.
 }
 
 async function sendAssemblyAI(publicUrl: string) {
+    const apiKey = process.env.ASSEMBLYAI_API_KEY;
+    if (!apiKey) {
+        throw new Error('AssemblyAI API key is required');
+    }
     const client = new AssemblyAI({
-        apiKey: '0481ff5fea9141c5928452a36e92f85e',
+        apiKey: apiKey
     });
     const FILE_URL = publicUrl;
     const data = {

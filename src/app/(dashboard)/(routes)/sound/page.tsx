@@ -11,8 +11,8 @@ const SoundPage
     <div className="flex flex-col items-center gap-10">
     
     {/* <RecordSound/> */}
-    {/* <AssemblySound/> */}
-    <RecordAndPlayAudio/>
+    <AssemblySound/>
+    {/* <RecordAndPlayAudio/> */}
     </div>
   )
 }

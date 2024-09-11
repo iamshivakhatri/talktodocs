@@ -1,9 +1,9 @@
-import FileUpload from "@/components/file-upload";
+// import FileUpload from "@/components/file-upload";
 
 const DashboardPage = () => {
     return ( <div>
         <div className="m-auto lg:max-w-2xl">
-         <FileUpload />
+         {/* <FileUpload /> */}
         </div>
         
     </div> );

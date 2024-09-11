@@ -1,6 +1,9 @@
 "use client";
 import React, { useState, useRef } from 'react';
 import { Mic, StopCircle, Download } from 'lucide-react';
+import axios from 'axios';
+import * as lamejs from '@breezystack/lamejs';
+
 
 const RecordAndPlayAudio: React.FC = () => {
     const [isRecording, setIsRecording] = useState(false);
@@ -19,20 +22,48 @@ const RecordAndPlayAudio: React.FC = () => {
             audioChunksRef.current.push(event.data);
         };
 
-        mediaRecorder.onstop = () => {
+        mediaRecorder.onstop = async () => {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
             const audioUrl = URL.createObjectURL(audioBlob);
             setAudioUrl(audioUrl);
             setAudioBlob(audioBlob);
             audioChunksRef.current = []; // Clear chunks for future recordings
+
+            // Upload audio to the server for MP3 conversion
+            await uploadAudio(audioBlob);
         };
 
         mediaRecorder.start();
     };
 
+
+
+
     const handleStopRecording = () => {
         setIsRecording(false);
         mediaRecorderRef.current?.stop();
+    };
+
+ 
+    const uploadAudio = async (blob: Blob) => {
+
+        const formData = new FormData();
+        formData.append('file', blob, 'recorded_audio.webm');
+
+        try {
+            const response = await axios.post('/api/assembly', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            console.log('Response from the api.:', response.data);
+
+            // const { mp3Url } = response.data;
+            // setAudioUrl(mp3Url); // Update with MP3 URL
+        } catch (error) {
+            console.error('Error uploading audio:', error);
+        }
     };
 
     return (
@@ -55,16 +86,14 @@ const RecordAndPlayAudio: React.FC = () => {
                     <audio controls src={audioUrl} className="w-full">
                         Your browser does not support the audio element.
                     </audio>
-                    {audioBlob && (
-                        <a
-                            href={audioUrl}
-                            download="recorded_audio.webm"
-                            className="mt-2 inline-block text-blue-500 hover:underline"
-                        >
-                            <Download className="inline-block w-6 h-6 mr-1" />
-                            Download Audio
-                        </a>
-                    )}
+                    <a
+                        href={audioUrl}
+                        download="recorded_audio.webm" // Change extension to .webm
+                        className="mt-2 inline-block text-blue-500 hover:underline"
+                    >
+                        <Download className="inline-block w-6 h-6 mr-1" />
+                        Download Audio
+                    </a>
                 </div>
             )}
         </div>

@@ -1,66 +1,53 @@
-// pages/api/upload-audio.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { IncomingForm } from 'formidable';
-import axios from 'axios';
 
 export const config = {
-  api: {
-    bodyParser: false, // Disallow body parsing, consume as stream
-  },
+    api: {
+        bodyParser: false,  // Disable default body parser
+    },
 };
 
-const saveFile = async (file: File) => {
-  const dir = 'tmp';
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-
-  const filePath = path.join(dir, `audio-${Date.now()}.mp3`);
-  const data = await file.arrayBuffer();
-  fs.writeFileSync(filePath, Buffer.from(data));
-  return filePath;
-};
-
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const form = new IncomingForm();
-
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      console.error('Error parsing the file:', err);
-      return res.status(500).json({ error: 'Failed to parse the file.' });
+export async function POST(req: Request) {
+    if (!req.body) {
+        return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
-
-    const file = files.audioFile as unknown as File;
-    const filePath = await saveFile(file);
-    console.log(`File saved successfully at ${filePath}`);
-
-    // Upload the file to AssemblyAI
-    const fileStream = fs.createReadStream(filePath);
 
     try {
-      const response = await axios.post(
-        'https://api.assemblyai.com/v2/upload',
-        fileStream,
-        {
-          headers: {
-            'authorization': process.env.ASSEMBLYAI_API_KEY,
-            'content-type': 'audio/mp3',
-          },
+        // Ensure upload directory exists
+        const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
         }
-      );
 
-      // Remove the file after upload
-      fs.unlinkSync(filePath);
+        // Create a writable stream to save the uploaded file
+        const filePath = path.join(uploadDir, `upload-${Date.now()}.webm`);
+        const fileStream = fs.createWriteStream(filePath);
 
-      // Return the response from AssemblyAI
-      return res.status(200).json(response.data);
+        // Read the incoming request body as a stream and pipe it to the file
+        await new Promise((resolve, reject) => {
+            const reader = req.body?.getReader();
+            if (!reader) {
+                reject(new Error('Failed to get the request body reader'));
+                return;
+            }
+            const writer = fileStream;
+
+            reader.read().then(function processText({ done, value }) {
+                if (done) {
+                    writer.end();
+                    resolve(undefined);
+                    return;
+                }
+                writer.write(value);
+                reader.read().then(processText).catch(reject);
+            }).catch(reject);
+        });
+
+        // Respond with the file URL
+        return NextResponse.json({ fileUrl: `/uploads/upload-${Date.now()}.webm` });
     } catch (error) {
-      console.error('Error uploading to AssemblyAI:', error);
-      return res.status(500).json({ error: 'Failed to upload to AssemblyAI.' });
+        console.error('Error saving the file:', error);
+        return NextResponse.json({ error: 'Error saving the file' }, { status: 500 });
     }
-  });
-};
-
-export default handler;
+}

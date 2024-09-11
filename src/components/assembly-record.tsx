@@ -11,12 +11,12 @@ const RecordSound = (props: Props) => {
     const [isPaused, setIsPaused] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
     const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+    const [transcript, setTranscript] = useState<string>('');
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
 
     const {
-        transcript,
         listening,
         resetTranscript,
         browserSupportsSpeechRecognition
@@ -82,12 +82,16 @@ const RecordSound = (props: Props) => {
         setIsPaused(false);
         mediaRecorderRef.current?.stop();
 
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mpeg' });
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' });
         setAudioBlob(audioBlob);
 
-        // Upload to AssemblyAI
+        // Save audio file locally or upload to AssemblyAI
+        const audioFile = new File([audioBlob], "audio.mp3", {
+            type: 'audio/mp3',
+        });
+
         const formData = new FormData();
-        formData.append('audio', audioBlob, 'audio.mp3');
+        formData.append('audio', audioFile);
 
         try {
             const response = await axios.post('https://api.assemblyai.com/v2/upload', formData, {

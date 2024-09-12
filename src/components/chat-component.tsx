@@ -109,7 +109,14 @@ const ChatComponent = ({chatId, isPro, numberOfMessages}: Props) => {
 
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (input.length > 500) { // Set your desired character limit
+            alert('Input is too large. Please limit your question to 500 characters.');
+            return;
+          }
+          handleSubmit(e); // Proceed with form submission
+        }}
         className="bg-gray-100 p-4 border-t"
       >
         <div className="flex items-center">

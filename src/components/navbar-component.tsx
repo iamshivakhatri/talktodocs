@@ -63,9 +63,7 @@ const NavbarComponent =async () => {
       <div>
 
       </div>
-      <div className='flex   gap-8'>
-       <p>Chat</p>
-       <p>Dashboard</p>
+      <div className='flex gap-8'>
           <UserButton afterSwitchSessionUrl='/' /> 
       </div>
     </div>

@@ -161,7 +161,7 @@ const handleUpload = () => {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-2 mt-4">
+      <div className="flex flex-col gap-2 mt-4 h-3/5  lg:h-7/10 overflow-scroll">
         {chatList.map((chat) => (
           <Link href={`/chat/${chat.id}`} key={chat.id}>
           <div

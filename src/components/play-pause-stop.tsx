@@ -196,9 +196,9 @@ const PlayPauseStop: React.FC<PlayPauseStopProps> = ({
             {isMediaRecording && isTranscriptOpen && (
             <div className="fixed bottom-4 right-4 bg-gray-800 p-2 rounded-lg max-w-xs max-h-24 overflow-y-auto transition-opacity duration-300 ease-in-out shadow-lg">
                 <div className="flex justify-between items-center mb-2">
-                <p className="text-white text-sm">Transcript</p>
+                    {transcript? ( <p className="text-white text-sm">Transcript</p>) : (<p className="text-white text-sm">No Transcript Available</p>)}
                 <button onClick={() => setIsTranscriptOpen(false)} className="hover:bg-red-500 p-1 rounded-full">
-                    <XCircle className="w-4 h-4 text-white" /> {/* Close icon */}
+                    <XCircle className="w-6 h-6 text-white" /> {/* Close icon */}
                 </button>
                 </div>
                 <div className="text-white text-sm">

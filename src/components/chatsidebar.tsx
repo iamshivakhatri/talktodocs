@@ -161,7 +161,7 @@ const handleUpload = () => {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-2 mt-4 h-3/5  lg:h-7/10 overflow-y-scroll ">
+      <div className="flex flex-col gap-2 mt-4 h-3/5  lg:h-7/10 overflow-y-scroll relative overflow-x-hidden">
         {chatList.map((chat) => (
           <Link href={`/chat/${chat.id}`} key={chat.id}>
           <div
@@ -187,7 +187,7 @@ const handleUpload = () => {
               
               {/* Dropdown Menu: Visible only when ellipsis is clicked for this particular chat */}
               {dropdownVisibleId === chat.id && (
-                <div className="absolute -right-32 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                <div className="absolute -right-32 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-100">
                   <ul className="text-left">
                     <li
                       className="p-2 hover:bg-gray-100 cursor-pointer"

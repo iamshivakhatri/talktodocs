@@ -44,7 +44,7 @@ export const FreeCounter =  ({numberOfMessages = 0, isPro=false}: FreeCounterPro
 
     return ( 
         <div className="px-3 ">
-            <Card className="bg-black/5 border-0">
+            <Card className="bg-gray-300 border-0">
                 <CardContent className="py-6">
                     <div className="text-center text-sm text-black mb-4">
                         

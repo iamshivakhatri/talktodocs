@@ -12,6 +12,7 @@ const RecordAndPlayAudio: React.FC = () => {
     const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
     const [isPaused, setIsPaused] = useState(false);
     const [isSpeechPaused, setIsSpeechPaused] = useState(false);
+    const [hasRecordingFinished, setHasRecordingFinished] = useState(false);
     // const [elapsedTime, setElapsedTime] = useState(0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -85,6 +86,7 @@ const RecordAndPlayAudio: React.FC = () => {
         setIsMediaRecording(false);
         setIsPaused(false);
         mediaRecorderRef.current?.stop();
+        setHasRecordingFinished(true);
     };
 
     const handlePauseMediaRecording = () => {

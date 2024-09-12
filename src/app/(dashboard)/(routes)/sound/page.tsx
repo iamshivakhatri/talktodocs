@@ -1,4 +1,4 @@
-import AssemblySound from '@/components/assembly-record'
+import AssemblySound from '@/components/record-and-play-audio'
 import RecordAndPlayAudio from '@/components/new-record'
 import RecordSound from '@/components/record-sound'
 import React from 'react'

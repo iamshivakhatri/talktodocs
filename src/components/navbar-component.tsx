@@ -9,6 +9,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { checkSubscription } from "@/lib/subscription";
 import { apiLimit } from "@/lib/api-limit";
+import RecordAndPlayAudio from "./record-and-play-audio";
 
 
 
@@ -43,9 +44,20 @@ const NavbarComponent =async () => {
 
   return (
     <div className='flex justify-between p-4 px-8 items-center'>
+      <div className="flex  justify-around">
+
+     
       <div>
         <MobileSidebar chats={_chats}  isPro={isPro} numberOfMessages={numberOfMessages} />
       </div>
+
+      <div>
+        <RecordAndPlayAudio />
+      </div>
+
+
+      </div>
+
 
       {/* sound recorder */}
       <div>

@@ -1,8 +1,10 @@
-import { Mic, PauseCircle, StopCircle, PlayCircle, Download, XCircle } from 'lucide-react';
+import { Mic, PauseCircle, StopCircle, PlayCircle, Download, XCircle, MessageCircle } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { Button } from './ui/button';
 
 
 type PlayPauseStopProps = {
@@ -18,6 +20,11 @@ type PlayPauseStopProps = {
     audioUrl?: string|null;
 };
 
+type FileDetails = {
+    file_key: string;
+    file_name: string;
+  };
+
 const PlayPauseStop: React.FC<PlayPauseStopProps> = ({
     isMediaRecording,
     isPaused,
@@ -32,7 +39,9 @@ const PlayPauseStop: React.FC<PlayPauseStopProps> = ({
 
 }) => {
     const [elapsedTime, setElapsedTime] = useState(0);
-
+    const router = useRouter();
+    const [isTranscriptOpen, setIsTranscriptOpen] = useState(false);
+    const [uploadButton, setUploadButton] = useState(false);
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -72,7 +81,16 @@ const PlayPauseStop: React.FC<PlayPauseStopProps> = ({
                 return;
             }
 
-            const data = await uploadTranscriptToS3(transcript);
+            
+            const response = await axios.post('/api/transcript-chat', {
+                transcript,  // sending the transcript in the request body
+            });
+            const data = response.data;
+    
+            if (!data?.file_key || !data?.file_name) {
+                toast.error("Failed to upload file");
+                return;
+              }
             mutate(data, {
                 onSuccess: ({ chatId }) => {
                     toast.success("Chat created successfully");
@@ -92,28 +110,47 @@ const PlayPauseStop: React.FC<PlayPauseStopProps> = ({
 
     return (
         <div>
-            <div className="flex gap-4 items-center mb-4">
-                {isMediaRecording ? (
-                    <>
-                        <button onClick={handleStopMediaRecording} className="hover:bg-red-500">
-                            <StopCircle className="w-8 h-8" />
-                        </button>
-                        <button onClick={handlePauseMediaRecording} className={`hover:bg-yellow-500 ${!isMediaRecording ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                            {isPaused ? (
-                                <PlayCircle className='w-8 h-8' />
-                            ) : (
-                                <PauseCircle className='w-8 h-8' />
-                            )}
-                        </button>
-                        <button onClick={handleCancelMediaRecording} className="hover:bg-gray-500">
-                            <XCircle className="w-8 h-8" />
-                        </button>
-                    </>
-                ) : (
-                    <button onClick={handleStartMediaRecording} className="hover:bg-green-500">
-                        <Mic className="w-8 h-8" />
-                    </button>
-                )}
+            <div className="flex gap-4 items-center">
+            {isMediaRecording ? (
+            <>
+                <button
+                    onClick={() => {
+                        handleStopMediaRecording();
+                        setUploadButton(true);
+                        setElapsedTime(0);
+                    }}
+                    className="hover:bg-red-500 p-2 rounded-full transition ease-in-out duration-300"
+                >
+                    <StopCircle className="w-8 h-8" />
+                </button>
+                <button
+                    onClick={() => {
+                        handlePauseMediaRecording();
+                        setUploadButton(false);
+                    }}
+                    className={`hover:bg-yellow-500 p-2 rounded-full transition ease-in-out duration-300 ${!isMediaRecording ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                    {isPaused ? (
+                        <PlayCircle className="w-8 h-8" />
+                    ) : (
+                        <PauseCircle className="w-8 h-8" />
+                    )}
+                </button>
+                <button onClick={handleCancelMediaRecording} className="hover:bg-gray-500 p-2 rounded-full transition ease-in-out duration-300">
+                    <XCircle className="w-8 h-8" />
+                </button>
+            </>
+        ) : (
+             
+                <button
+                    onClick={handleStartMediaRecording}
+                    className="hover:bg-green-500 p-2 rounded-full transition ease-in-out duration-300"
+                >
+                    <Mic className="w-8 h-8" />
+                </button>
+            
+        )}
+
 
                 {isMediaRecording ?(
                 <div className='relative'>
@@ -121,10 +158,19 @@ const PlayPauseStop: React.FC<PlayPauseStopProps> = ({
                         {isPaused ? 'Paused' : `Recording... ${formatTime(elapsedTime)}`}
                     </p>
                 </div>
-            ):
-            <button onClick={handleUploadTranscript} className="hover:bg-blue-500">
-                Upload Transcript and Create Chat
-            </button>
+            ): uploadButton && transcript &&(
+                <>
+                
+                <Button onClick={handleUploadTranscript} className="hover:bg-blue-500 p-3 rounded-md transition ease-in-out duration-300">
+                Create Chat
+                </Button>
+
+                <button onClick={()=>{setUploadButton(false)}} className='cursor-pointer' >
+                <XCircle className="w-8 h-8"  />
+                </button>
+            </>
+
+            )
             
             }
 
@@ -132,12 +178,66 @@ const PlayPauseStop: React.FC<PlayPauseStopProps> = ({
 
             </div>
 
+            {/* Animated Chat Icon (Message Icon) that appears after recording */}
+            {isMediaRecording && !isTranscriptOpen && (
+            <button onClick={() => setIsTranscriptOpen(true)} className="fixed bottom-4 right-4 p-2 rounded-full bg-blue-500 hover:bg-blue-600 shadow-lg">
+                <div className="relative w-6 h-6 flex justify-center items-center">
+                {/* Pulsing effect to indicate recording */}
+                <span className="absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75 animate-ping"></span>
+                {/* Message Circle Icon */}
+                <div className="relative inline-flex rounded-full h-6 w-6 bg-blue-500 text-center">
+                    <Mic className="w-6 h-6 text-white" /> {/* Chat/Message icon */}
+                </div>
+                </div>
+            </button>
+            )}
+
+            {/* Transcript Box with Close Button */}
+            {isMediaRecording && isTranscriptOpen && (
+            <div className="fixed bottom-4 right-4 bg-gray-800 p-2 rounded-lg max-w-xs max-h-24 overflow-y-auto transition-opacity duration-300 ease-in-out shadow-lg">
+                <div className="flex justify-between items-center mb-2">
+                <p className="text-white text-sm">Transcript</p>
+                <button onClick={() => setIsTranscriptOpen(false)} className="hover:bg-red-500 p-1 rounded-full">
+                    <XCircle className="w-4 h-4 text-white" /> {/* Close icon */}
+                </button>
+                </div>
+                <div className="text-white text-sm">
+                <p>{transcript}</p>
+                </div>
+            </div>
+            )}
+
+    {/*** 
+            {isMediaRecording && !isTranscriptOpen && (
+            <button onClick={() => setIsTranscriptOpen(true)} className="fixed bottom-4 right-4 p-2 rounded-full bg-blue-500 hover:bg-blue-600 shadow-lg">
+                <MessageCircle className="w-6 h-6 text-white" /> 
+            </button>
+            )}
+
+            {isMediaRecording && isTranscriptOpen && (
+            <div className="fixed bottom-4 right-4 bg-gray-800 p-2 rounded-lg max-w-xs max-h-24 overflow-y-auto transition-opacity duration-300 ease-in-out shadow-lg">
+                <div className="flex justify-between items-center mb-2">
+                <p className="text-white text-sm">Transcript</p>
+                <button onClick={() => setIsTranscriptOpen(false)} className="hover:bg-red-500 p-1 rounded-full">
+                    <XCircle className="w-4 h-4 text-white" /> 
+                </button>
+                </div>
+                <div className="text-white text-sm">
+                <p>{transcript}</p>
+                </div>
+            </div>
+            )}
+
+          **/}
+
+
            
 
-            {/* {transcript && (
-                <div className='mt-4 p-4 bg-gray-800 rounded-lg'>
-                    <p className='text-white'>{transcript}</p>
-                </div>
+            {/* Transcript Box - ABSOLUTE positioning
+            {transcript && (
+            <div className="fixed bottom-4 right-4 bg-gray-800 p-2 rounded-lg max-w-xs max-h-24 overflow-y-auto transition-opacity duration-300 ease-in-out  shadow-lg">
+                <p className="text-white text-sm">{transcript}</p>
+            </div>
             )} */}
 
             {/* {audioUrl && (

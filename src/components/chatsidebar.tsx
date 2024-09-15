@@ -117,7 +117,7 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro,  numberOfMessages }: Props)
 const proModal = useProModal();
 
 const handleUpload = () => {
-  if (!isPro && numberOfMessages >= 3) {
+  if (!isPro && numberOfMessages >= 50) {
     proModal.onOpen();
   } else {
     setOpenUpload(true);

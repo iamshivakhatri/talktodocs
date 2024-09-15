@@ -20,7 +20,6 @@ interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
   loading: boolean;
-
 }
 
 type FileDetails = {
@@ -32,16 +31,13 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   isOpen,
   onClose,
   loading,
-
 }) => {
-
   // const isPro = await  checkSubscription();
   // let numberOfMessages = await apiLimit();
 
-
-
   const [isMounted, setIsmounted] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [youtubeUrl, setYoutubeUrl] = useState("");
   const router = useRouter();
 
   const { mutate, isPending } = useMutation({
@@ -101,11 +97,23 @@ export const UploadModal: React.FC<UploadModalProps> = ({
 
   if (!isMounted) return null;
 
+
+  const handleUrl = async()=>{
+    console.log("This is handleUrl function with url ", youtubeUrl);
+  
+    const transcript = await axios.get("/api/youtube", {
+      params: {
+        url: youtubeUrl
+      },
+    });
+    console.log("This is transcript data", transcript.data);
+  }
+
   return (
     <Modal
       title="Upload File"
       description="Drag & drop your file here to upload it."
-      isOpen={isOpen}
+      isOpen={true}
       onClose={onClose}
     >
       <div className="pt-6">
@@ -132,18 +140,39 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </>
           )}
         </div>
+        <p className="mt-2 mb-2 text-center">OR</p>
+        <div>
+          <input
+            value={youtubeUrl}
+            onChange={(e)=> setYoutubeUrl(e.target.value)}
+            onSubmit={()=>{
+              console.log("This is submit")
+              handleUrl()
+            }}
+            type="text"
+            id="text-upload"
+            placeholder="Paste a YouTube link"
+            className="w-4/5 md:w-3/4 m-auto border-dashed border-2 border-gray-400 text-lg font-bold text-stone-500 p-12 rounded-lg cursor-pointer bg-gray-50 py-8 flex items-center justify-center flex-col"
+            // className="w-4/5 md:w-3/4 m-auto text-gray-900 h-12 border-4 border-dashed border-gray-300 rounded-lg text-center p-4 bg-gray-100 "
+          
+          />
+        </div>
       </div>
       <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-        <Button disabled={loading || uploading} variant={"outline"} onClick={onClose}>
+        <Button
+          disabled={loading || uploading}
+          variant={"outline"}
+          onClick={onClose}
+        >
           Cancel
         </Button>
 
         <Button
           disabled={loading || uploading}
-          variant={"destructive"}
-          onClick={onClose}
+          variant={"price"}
+          onClick={handleUrl}
         >
-          Close
+          Submit url
         </Button>
       </div>
     </Modal>

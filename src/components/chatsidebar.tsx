@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { useChat } from "@/context/chat-provider";
 import { FreeCounter } from "./free-counter";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { MAX_FREE_COUNTS } from "@/constant";
 
 
 type Props = {
@@ -117,7 +118,7 @@ const ChatSideBar = ({chats, chatId, fileKey, isPro,  numberOfMessages }: Props)
 const proModal = useProModal();
 
 const handleUpload = () => {
-  if (!isPro && numberOfMessages >= 50) {
+  if (!isPro && numberOfMessages >= MAX_FREE_COUNTS ) {
     proModal.onOpen();
   } else {
     setOpenUpload(true);
@@ -127,13 +128,13 @@ const handleUpload = () => {
 
 
 useEffect(() => {
-  const messageLimit = Number(process.env.MESSAGE_LIMIT) || 10; // Set a default limit
+  const messageLimit = MAX_FREE_COUNTS ; // Set a default limit
   console.log("this is message limit at chatside bar", messageLimit);
-  if (!isPro && numberOfMessages >= messageLimit) {
-    proModal.onOpen();
-    console.log("new for  modal");
-  }
-}, [isPro, numberOfMessages]);
+  // if (!isPro && numberOfMessages >= messageLimit) {
+  //   proModal.onOpen();
+  //   console.log("new for  modal");
+  // }
+}, [isPro]);
 
 
   return (

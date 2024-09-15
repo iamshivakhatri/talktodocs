@@ -21,6 +21,7 @@ export const FreeCounter =  ({numberOfMessages = 0, isPro=false}: FreeCounterPro
     const [mounted, setMounted] = useState(false);
     const proModal = useProModal();
 
+
     useEffect(() => {
         setMounted(true);
     }, []);

@@ -14,6 +14,7 @@ import { auth } from '@clerk/nextjs/server';
 
 import { checkSubscription } from "@/lib/subscription";
 import { apiLimit } from "@/lib/api-limit";
+import {MAX_FREE_COUNTS} from "@/constant";
 
 export const maxDuration = 30; // 
 
@@ -39,12 +40,13 @@ export async function POST(req: Request) {
 
 
         }
-        const messageLimits = process.env.MESSAGE_LIMIT || 10; // Set a default limit
+        const messageLimit = MAX_FREE_COUNTS || 9 // Set a default limit
 
-        // if (!isPro && numberOfMessages >= 3) {
-        //     console.log("Exceeded free usage limit");
-        //     return NextResponse.json({error: 'Exceeded free usage limit'}, {status: 402});
-        // }
+
+        if (!isPro && numberOfMessages >= messageLimit) {
+            console.log("Exceeded free usage limit");
+            return NextResponse.json({error: 'Exceeded free usage limit'}, {status: 402});
+        }
 
 
         // Parse the request body to get the messages array
@@ -59,23 +61,15 @@ export async function POST(req: Request) {
         const fileKey = _chats[0].fileKey;
         const context = await getContext(lastMessage.content, fileKey);
 
-        const prompt = {
-            role: "system",
-            content: `AI assistant is a brand new, powerful, human-like artificial intelligence.
-            The traits of AI include expert knowledge, helpfulness, cleverness, and articulateness.
-            AI is a well-behaved and well-mannered individual.
-            AI is always friendly, kind, and inspiring, and he is eager to provide vivid and thoughtful responses to the user.
-            AI has the sum of all knowledge in their brain, and is able to accurately answer nearly any question about any topic in conversation.
-            AI assistant is a big fan of Pinecone and Vercel.
-            START CONTEXT BLOCK
-            ${context}
-            END OF CONTEXT BLOCK
-            AI assistant will take into account any CONTEXT BLOCK that is provided in a conversation.
-            If the context does not provide the answer to question, the AI assistant will say, "I'm sorry, but I don't know the answer to that question".
-            AI assistant will not apologize for previous responses, but instead will indicated new information was gained.
-            AI assistant will not invent anything that is not drawn directly from the context.
-            `,
-          };
+        const systemPrompt = `AI assistant is a powerful, human-like AI with expert knowledge. 
+        It's helpful, clever, articulate, well-behaved, friendly, and inspiring. 
+        It has vast knowledge and can answer nearly any question accurately. 
+        AI assistant is a fan of Pinecone and Vercel.
+        ${context ? `CONTEXT: ${context}` : ''}
+        If the context doesn't provide an answer, say "I'm sorry, but I don't know the answer to that question".
+        Don't apologize for previous responses, but indicate if new information was gained.
+        Don't invent anything not directly from the context.`;
+
 
  
         console.log("messages", messages);
@@ -84,6 +78,14 @@ export async function POST(req: Request) {
         if (!messages || !Array.isArray(messages)) {
             throw new Error("Invalid prompt format: 'messages' must be an array of message objects.");
         }
+
+                // Filter the messages to get only the user's messages
+        const userMessages = messages.filter((message: Message) => message.role === "user");
+
+        // Get the last 3 messages from the user's messages
+        const lastThreeMessages = userMessages.slice(-3);  // Slicing to get the last 3 items
+        console.log("lastThreeMessages", lastThreeMessages);
+
 
         // Save user message into the database
     
@@ -102,11 +104,12 @@ export async function POST(req: Request) {
         // Use streamText to get a streaming response from OpenAI
         const result = await streamText({
             model: openai('gpt-4o-mini'),
-            system: `You are a helpful, respectful, and honest assistant.`,
-            messages: [
-                prompt,
-                ...messages.filter((message: Message) => message.role === "user"),
-              ],
+            system: systemPrompt,
+            messages: lastThreeMessages, // Pass only the last three user messages
+            // messages: [
+            //     prompt,
+            //     ...messages.filter((message: Message) => message.role === "user"),
+            //   ],
             async onFinish({ text, toolCalls, toolResults, finishReason, usage }) {
             // implement your own storage logic:
             await db.insert(_messages).values({

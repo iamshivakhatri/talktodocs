@@ -167,7 +167,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
           })}
         >
           <input {...getInputProps()} disabled={loading || uploading} />
-          {isPending || uploading ? (
+          {(isPending || uploading) && !isUploading ? (
             <>
               <Loader2 className="w-10 h-10 text-gray-900 animate-spin" />
               <p className="text-zinc-400 text-sm mt-2">
@@ -183,7 +183,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </>
           )}
         </div>
-        <p className="mt-2 mb-2 text-center">OR</p>
+        <p className="mt-2 mb-2 text-center text-stone-700 text-bold">OR</p>
         <div>
         {isUploading ?(
             <>
@@ -204,7 +204,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             type="text"
             id="text-upload"
             placeholder="Paste a YouTube link"
-            className="w-4/5 md:w-3/4 m-auto border-dashed border-2 border-gray-400 text-lg font-bold text-stone-500 p-12 rounded-lg cursor-pointer bg-gray-50 py-8 flex items-center justify-center flex-col"
+            className="w-4/5 md:w-3/4 m-auto border-dashed border-2 border-gray-400 text-lg font-bold text-stone-700 p-6 rounded-lg cursor-pointer bg-gray-50 py-8 flex items-center justify-center flex-col"
             // className="w-4/5 md:w-3/4 m-auto text-gray-900 h-12 border-4 border-dashed border-gray-300 rounded-lg text-center p-4 bg-gray-100 "
           
           />
@@ -222,9 +222,13 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         </Button>
 
         <Button
-          disabled={loading || youtubeUrl.length === 0}
+          disabled={isUploading|| youtubeUrl.length === 0}
           variant={"price"}
-          onClick={handleUrl}
+          onClick={()=>{
+            setIsUploading(true);
+            handleUrl()
+          }
+          }
         >
           Submit url
         </Button>

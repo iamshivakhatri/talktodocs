@@ -61,7 +61,16 @@ const SummaryComponent = ({ chatId }: Props) => {
           if (summary.length > 0) {
             setMessages(summary);
         }else{
-          sendMessage({role: 'user', content: 'Please provide the summary of the given content.',});
+          sendMessage({
+            role: 'user',
+            content: `
+              Please summarize the given content. Focus on extracting the key points and main ideas. 
+              Make sure the summary is clear and easy to understand. 
+              Highlight the most important details, and avoid including irrelevant or repeated information.
+              Provide a concise overview, capturing the essence of the material.
+              Ensure the summary is well-structured and coherent throughout.`
+          });
+          
 
         }
     }

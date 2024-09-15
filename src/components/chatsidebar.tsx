@@ -126,12 +126,14 @@ const handleUpload = () => {
 
 
 
-// useEffect(() => {
-//   if (!isPro && numberOfMessages >= 3) {
-//     proModal.onOpen();
-//     console.log("new for  modal");
-//   }
-// }, [isPro, numberOfMessages]);
+useEffect(() => {
+  const messageLimit = Number(process.env.MESSAGE_LIMIT) || 10; // Set a default limit
+  console.log("this is message limit at chatside bar", messageLimit);
+  if (!isPro && numberOfMessages >= messageLimit) {
+    proModal.onOpen();
+    console.log("new for  modal");
+  }
+}, [isPro, numberOfMessages]);
 
 
   return (

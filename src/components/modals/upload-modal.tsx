@@ -38,6 +38,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   const [isMounted, setIsmounted] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
 
   const { mutate, isPending } = useMutation({
@@ -106,14 +107,56 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         url: youtubeUrl
       },
     });
-    console.log("This is transcript data", transcript.data);
+    const data = transcript.data;
+    
+    const transcriptData = data.transcript;
+    if (!transcriptData) {
+      toast.error("No transcript available");
+      return;
+    }
+    handleUploadTranscript(transcriptData);
+
+    console.log("This is transcript data", transcriptData);
   }
+
+  const handleUploadTranscript = async (transcript:String) => {
+    try {
+      if (!transcript) {
+        toast.error("No transcript available");
+        return;
+      }
+
+      const response = await axios.post("/api/transcript-chat", {
+        transcript, // sending the transcript in the request body
+      });
+      const data = response.data;
+
+      if (!data?.file_key || !data?.file_name) {
+        toast.error("Failed to upload file");
+        return;
+      }
+      mutate(data, {
+        onSuccess: ({ chatId }) => {
+          toast.success("Chat created successfully");
+          router.push(`/chat/${chatId}`);
+          setIsUploading(false);
+        },
+        onError: (error) => {
+          console.error(error);
+          toast.error("Failed to create chat");
+          setIsUploading(false);
+        },
+      });
+    } catch (error) {
+      toast.error("Failed to upload transcript");
+    }
+  };
 
   return (
     <Modal
       title="Upload File"
       description="Drag & drop your file here to upload it."
-      isOpen={true}
+      isOpen={isOpen}
       onClose={onClose}
     >
       <div className="pt-6">
@@ -142,7 +185,16 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         </div>
         <p className="mt-2 mb-2 text-center">OR</p>
         <div>
-          <input
+        {isUploading ?(
+            <>
+              <Loader2 className="w-10 h-10 text-gray-900 animate-spin" />
+              <p className="text-zinc-400 text-sm mt-2">
+                Creating the chat with the youtube content.
+              </p>
+            </>
+          ) : (
+
+            <input
             value={youtubeUrl}
             onChange={(e)=> setYoutubeUrl(e.target.value)}
             onSubmit={()=>{
@@ -156,6 +208,8 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             // className="w-4/5 md:w-3/4 m-auto text-gray-900 h-12 border-4 border-dashed border-gray-300 rounded-lg text-center p-4 bg-gray-100 "
           
           />
+          )}
+          
         </div>
       </div>
       <div className="pt-6 space-x-2 flex items-center justify-end w-full">
@@ -168,7 +222,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         </Button>
 
         <Button
-          disabled={loading || uploading}
+          disabled={loading || youtubeUrl.length === 0}
           variant={"price"}
           onClick={handleUrl}
         >

@@ -39,11 +39,12 @@ export async function POST(req: Request) {
 
 
         }
+        const messageLimits = process.env.MESSAGE_LIMIT || 10; // Set a default limit
 
-        if (!isPro && numberOfMessages >= 3) {
-            console.log("Exceeded free usage limit");
-            return NextResponse.json({error: 'Exceeded free usage limit'}, {status: 402});
-        }
+        // if (!isPro && numberOfMessages >= 3) {
+        //     console.log("Exceeded free usage limit");
+        //     return NextResponse.json({error: 'Exceeded free usage limit'}, {status: 402});
+        // }
 
 
         // Parse the request body to get the messages array

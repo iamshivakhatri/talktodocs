@@ -117,6 +117,9 @@ const SummaryComponent = ({ chatId }: Props) => {
           Here is some related information or links that provide additional context or resources.
         </p>
       </div>
+
+
+      
     </div>
   );
 };

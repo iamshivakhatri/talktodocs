@@ -1,6 +1,7 @@
 import React from 'react'
 import { Message } from 'ai/react'
 import {cn} from "@/lib/utils"
+import ReactMarkdown from "react-markdown";
 
 type Props = {
   messages: Message[],
@@ -22,7 +23,22 @@ const MessageList = ({messages,  onPromptClick }: Props) => {
         {messages.map((message) => (
           <div key={message.id} className={cn('flex mb-3', {"justify-end pl-10": message.role === "user", "justify-start pr-10": message.role ==="assistant"})}>
            <div className={cn("rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10", {"bg-gray-900 text-white": message.role === "user"})}>
-            <p>{message.content}</p>
+            {/* <p>{message.content}</p> */}
+            <ReactMarkdown 
+                            className="text-sm overflow-hidden leading-7"
+                            components={{
+                                pre: ({ node, ...props }) => (
+                                    <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg border-blac-10">
+                                       <pre {...props} />
+                                    </div>
+                                ),// This is code block which contains the code
+                                code: ({node,...props}) => (
+                                    <code className="bg-black/10 rounded-lg p-1" {...props} />
+                                )// this is small code word in the explanation which will have bg-black/10
+                            }}
+                        >
+                            {message.content || ""}
+              </ReactMarkdown>
            </div>
           </div>
         ))}

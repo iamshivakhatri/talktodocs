@@ -1,7 +1,7 @@
 "use client";
 import { DrizzleChat } from "@/lib/db/schema";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, PlusCircle, MoreVertical, Delete, PenTool } from "lucide-react";
 import axios from "axios";
@@ -34,6 +34,8 @@ const ChatSideBar = ({ chats, chatId, fileKey, isPro, numberOfMessages }: Props)
   const { setFileKey, setChatId } = useChat();
   const [dropdownVisibleId, setDropdownVisibleId] = useState<number | null>(null);
   const proModal = useProModal();
+  const selectedChatRef = useRef<HTMLDivElement | null>(null);
+
 
   useEffect(() => {
     setFileKey(fileKey);
@@ -43,6 +45,16 @@ const ChatSideBar = ({ chats, chatId, fileKey, isPro, numberOfMessages }: Props)
   useEffect(() => {
     setChatList(chats);
   }, [chats]);
+
+    // Scroll the selected chat into view when it's selected
+    useEffect(() => {
+      if (selectedChatRef.current) {
+        selectedChatRef.current.scrollIntoView({ 
+          behavior: "smooth", block: "start" 
+        });
+      }
+      
+    }, [chatId]); // Trigger when the selected chat ID changes
 
   const handleMoreClick = (e: React.MouseEvent, id: number) => {
     e.preventDefault();
@@ -112,7 +124,13 @@ const ChatSideBar = ({ chats, chatId, fileKey, isPro, numberOfMessages }: Props)
 
         <div className="flex-grow overflow-y-auto space-y-2">
           {chatList.map((chat) => (
-            <div key={chat.id} className="relative">
+            <div 
+            key={chat.id}
+             className="relative"
+             ref={chat.id === chatId ? selectedChatRef : null} // Add ref to the selected chat
+
+             
+             >
               <Link href={`/chat/${chat.id}`}>
                 <div
                   className={`flex items-center justify-between p-2 rounded-md ${

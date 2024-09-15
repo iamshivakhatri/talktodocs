@@ -6,6 +6,7 @@ import { db } from '@/lib/db';
 import {  summary as _summary } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import axios from 'axios';
+import ReactMarkdown from "react-markdown";
 
 
 
@@ -92,15 +93,30 @@ const SummaryComponent = ({ chatId }: Props) => {
   return (
     <div className="bg-gray-100 flex flex-col gap-4 p-2 lg:p-4 h-full justify-around">
       {/* Summary Section */}
+      <h2 className="text-lg font-semibold text-gray-800 mb-2">Summary</h2>
       <div className="p-2 lg:p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer h-1/2 overflow-scroll">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">Summary</h2>
+        
         <div className="text-gray-900 text-sm">
 
         {messages &&  messages.map((message) => (
             (message.role==="user")?  null  : 
             <div key={message.id}>
               <div>
-                <p>{message.content}</p>
+              <ReactMarkdown 
+                            className="text-sm overflow-hidden leading-7"
+                            components={{
+                                pre: ({ node, ...props }) => (
+                                    <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg border-blac-10">
+                                       <pre {...props} />
+                                    </div>
+                                ),// This is code block which contains the code
+                                code: ({node,...props}) => (
+                                    <code className="bg-black/10 rounded-lg p-1" {...props} />
+                                )// this is small code word in the explanation which will have bg-black/10
+                            }}
+                        >
+                            {message.content || ""}
+              </ReactMarkdown>
               </div>
             </div>
            ))} 
@@ -110,8 +126,9 @@ const SummaryComponent = ({ chatId }: Props) => {
       </div>
 
       {/* Related Information Section */}
+      <h2 className="text-lg font-semibold text-gray-800 mb-2">Related Information</h2>
+
       <div className="p-2 lg:p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer h-1/2 scroll-auto">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">Related Information</h2>
         <p className="text-gray-900 text-sm">
           {/* Placeholder text, replace with actual related information */}
           Here is some related information or links that provide additional context or resources.
@@ -119,7 +136,7 @@ const SummaryComponent = ({ chatId }: Props) => {
       </div>
 
 
-      
+
     </div>
   );
 };

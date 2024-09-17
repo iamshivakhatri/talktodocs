@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useChat } from "ai/react";
 import {cn} from "@/lib/utils"
 import { db } from '@/lib/db';
@@ -19,6 +19,13 @@ type Message = {
   // Add other properties if needed
 };
 const SummaryComponent = ({ chatId }: Props) => {
+  // const [isMounted, setIsMounted] = useState(false);
+
+//   useEffect(() => {
+//     setIsMounted(true);
+// }, []);
+
+// if (!isMounted) return null;
 
 
 
@@ -28,6 +35,13 @@ const SummaryComponent = ({ chatId }: Props) => {
   const { append, messages, setMessages } = useChat({
     api: '/api/summary',
     body: { chatId },
+    onResponse: (response) => {
+      console.log("API response while creating a chat:", response);
+      if (response.status === 404) {
+          console.error("Error with the API call:", response);
+          return;
+      }
+  },
     // Add any additional configurations if needed
   });
 
@@ -97,6 +111,7 @@ const SummaryComponent = ({ chatId }: Props) => {
       <div className="p-2 lg:p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out cursor-pointer h-1/2 overflow-scroll">
         
         <div className="text-gray-900 text-sm">
+          
 
         {messages &&  messages.map((message) => (
             (message.role==="user")?  null  : 

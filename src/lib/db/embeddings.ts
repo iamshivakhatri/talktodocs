@@ -26,3 +26,5 @@ export async function getEmbeddings(text: string){
         console.error(error);
     }
 }
+
+// [ -0.010930763, 0.0004580362, 0.022358378, -0.01414723, -0.032687686 ]

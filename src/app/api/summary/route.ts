@@ -9,6 +9,7 @@ import { db } from '@/lib/db';
 import { chats, messages as _messages, summary as _summary } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
+import { getSummaryContext } from '@/lib/summary-context';
 
 export const maxDuration = 30; // 
 
@@ -35,14 +36,22 @@ export async function POST(req: Request) {
          
 
         const _chats = await db.select().from(chats).where(eq(chats.id, chatId)) // extract the pdf_name, pdf_url for the chatid
-        const lastMessage = messages[0].content; 
+        // const lastMessage = await messages[0].content; 
+        const lastdisplay = await messages[0].content; 
+        console.log("lastMessage sent before", lastdisplay);
+
+        const lastMessage = "What is the summary of the given content? Please try to give short overview of this content."; // hardcoded for testing
 
 
         if(_chats.length != 1){
             return NextResponse.json({error: 'chat not found'}, {status: 404});
         }
         const fileKey = _chats[0].fileKey;
-        const context = await getContext(lastMessage, fileKey);
+        const context = await getSummaryContext(fileKey);
+        // if (context.length === 0) {
+        //     return NextResponse.json({ error: 'No context found for summary' }, { status: 404 });
+        // }
+        console.log("context while getting summary ", context);
 
 
         const prompt = {

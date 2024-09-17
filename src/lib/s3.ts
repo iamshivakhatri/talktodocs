@@ -1,16 +1,20 @@
 import AWS from 'aws-sdk';
-import PDFDocument from 'pdfkit';
-import crypto from 'crypto';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export async function uploadToS3(file:File){
+    console.log("uploading to s3 here ",process.env.NEXT_PUBLIC_S3_BUCKET_NAME);
+
     try{
+        console.log("uploading to s3 ",process.env.NEXT_PUBLIC_S3_BUCKET_NAME);
         AWS.config.update({
                 accessKeyId:process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
                 secretAccessKey:process.env.NEXT_PUBLIC_S3_SECRET_KEY,
         });
         const s3 = new AWS.S3({
             params: {
-                Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
+                Bucket: 'sk-chat-app-storage',
             },
             region: 'us-east-2',
             }
@@ -22,7 +26,7 @@ export async function uploadToS3(file:File){
         console.log("Uploading to S3... file_name", file.name);
 
         const params = {
-            Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
+            Bucket: 'sk-chat-app-storage',
             Key: file_key,
             Body: file,
             

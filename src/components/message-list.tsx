@@ -22,7 +22,7 @@ const MessageList = ({messages,  onPromptClick }: Props) => {
         <div >
         {messages.map((message) => (
           <div key={message.id} className={cn('flex mb-3', {"justify-end pl-10": message.role === "user", "justify-start ": message.role ==="assistant"})}>
-           <div className={cn("rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10 ", {"bg-gray-900 text-white": message.role === "user", "w-3/5": message.role === "assistant"})}>
+           <div className={cn("rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10 ", {"bg-gray-900 text-white": message.role === "user", "w-4/5": message.role === "assistant"})}>
             {/* <p>{message.content}</p> */}
             <ReactMarkdown 
                             className="text-sm overflow-hidden leading-7 "

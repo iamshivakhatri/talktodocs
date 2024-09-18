@@ -82,17 +82,31 @@ const ChatSideBar = ({ chats, chatId, fileKey, isPro, numberOfMessages }: Props)
       const message = await axios.delete('/api/aws', { data: { fileKey: fileKey } });
       const neonResponse = await axios.delete('/api/neon', { data: { chatId: deleteId, fileKey: fileKey } });
       
-      const newChatId = chats[chats.length - 1].id;
-      router.push(`/chat/${newChatId}`);
+      // Update the chatList state by filtering out the deleted chat
+      setChatList(prevChatList => prevChatList.filter(chat => chat.id !== deleteId));
+
+      // Find the next available chat to redirect to
+      const remainingChats = chatList.filter(chat => chat.id !== deleteId);
+      const newChatId = remainingChats.length > 0 ? remainingChats[remainingChats.length - 1].id : null;
+
+      if (newChatId) {
+        router.push(`/chat/${newChatId}`);
+      } else {
+        // If there are no more chats, redirect to the home page or show a message
+        router.push('/');
+      }
+
       toast.success(message.data);
     } catch (error) {
       console.error("Error deleting chat:", error);
+      toast.error("Failed to delete chat");
     } finally {
       setLoadingDelete(false);
       setOpenDelete(false);
       setDropdownVisibleId(null);
     }
   };
+
 
   const handleUpload = () => {
     if (!isPro && numberOfMessages >= MAX_FREE_COUNTS) {

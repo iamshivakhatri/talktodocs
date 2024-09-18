@@ -6,10 +6,13 @@ import {  streamText  } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { getContext } from '@/lib/context';
 import { db } from '@/lib/db';
-import { chats, messages as _messages, summary as _summary } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { chats, messages as _messages, summary as _summary,  messageRecords } from '@/lib/db/schema';
+import { eq, sql } from 'drizzle-orm';
+
 import { NextResponse } from 'next/server';
 import { getSummaryContext } from '@/lib/summary-context';
+import { auth } from '@clerk/nextjs/server';
+
 
 export const maxDuration = 30; // 
 
@@ -18,6 +21,12 @@ export async function POST(req: Request) {
     try {
         // Parse the request body to get the messages array
         const { chatId, messages } = await req.json();
+        const {userId}: {userId: string | null} = auth();
+        if (!userId) {
+            return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+
+
+        }
         // const summary = await db.select().from(_summary).where(eq(_summary.chatId, chatId));
         // // If the summary exists, return it in the expected format
         // if (summary.length > 0) {
@@ -82,6 +91,25 @@ export async function POST(req: Request) {
                     chatId,
                     content: text,
                 });
+                const existingRecord = await db.select().from(messageRecords).where(eq(messageRecords.userId, userId))
+                console.log("existingRecord", existingRecord);
+
+                if (existingRecord.length > 0) {
+                    // If record exists, update the record
+                    await db.update(messageRecords)
+                        .set({
+                            numberOfMessages: sql`${messageRecords.numberOfMessages} + 1`,
+                        })
+                        .where(eq(messageRecords.userId, userId));
+                    console.log("Updated existing record");
+                } else {
+                    // If record does not exist, insert a new record
+                    await db.insert(messageRecords).values({
+                        userId: userId,
+                        numberOfMessages: 1, // Start with 1 message
+                    });
+                    console.log("Inserted new record");
+                }
             },
    
         });

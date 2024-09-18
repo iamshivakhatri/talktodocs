@@ -47,7 +47,7 @@ const MessageList = ({messages,  onPromptClick }: Props) => {
       :
       (
         <div className="text-gray-900 flex items-center justify-center h-full">
-          <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-4 p-4">
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 p-4">
             <div onClick={()=>{handlePrompt("What is this document about?")}} className="text-gray-900 text-sm flex items-center justify-center
              hover:bg-gray-200 h-28 w-28 rounded-lg shadow-md p-2 cursor-pointer">
               What is this document about?

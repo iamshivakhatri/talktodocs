@@ -4,8 +4,14 @@ import axios from 'axios';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { Mic, PauseCircle, StopCircle, PlayCircle, Download, XCircle } from 'lucide-react';
 import PlayPauseStop from './play-pause-stop';
+import { MAX_FREE_COUNTS } from "@/constant";
+import { useProModal } from "@/hooks/use-pro-modal";
 
-const RecordAndPlayAudio: React.FC = () => {
+type RecordAndPlayAudioProps = {
+    isPro: boolean;
+    numberOfMessages: number; // Add this prop
+}
+const RecordAndPlayAudio: React.FC<RecordAndPlayAudioProps> = ({isPro, numberOfMessages}) => {
     const [isMediaRecording, setIsMediaRecording] = useState(false);
     const [isSpeechRecording, setIsSpeechRecording] = useState(false);
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -17,6 +23,7 @@ const RecordAndPlayAudio: React.FC = () => {
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
+    const proModal = useProModal();
 
     const {
         transcript,
@@ -52,6 +59,14 @@ const RecordAndPlayAudio: React.FC = () => {
     // }, [isMediaRecording]);
 
     const handleStartMediaRecording = async () => {
+        console.log("numberOfMessages at record and play", numberOfMessages);
+        console.log("isPro at record and play", isPro);
+        if (!isPro && numberOfMessages >= MAX_FREE_COUNTS) {
+            proModal.onOpen();
+        }else{
+
+       
+        
         if (isSpeechRecording) {
             SpeechRecognition.stopListening();
             setIsSpeechRecording(false);
@@ -80,6 +95,7 @@ const RecordAndPlayAudio: React.FC = () => {
         };
 
         mediaRecorder.start();
+    }
     };
 
     const handleStopMediaRecording = () => {
@@ -121,6 +137,10 @@ const RecordAndPlayAudio: React.FC = () => {
     };
 
     const handleStartSpeechRecognition = () => {
+        if (!isPro && numberOfMessages >= MAX_FREE_COUNTS) {
+            proModal.onOpen();
+        }else{
+        
         if (isMediaRecording) {
             mediaRecorderRef.current?.stop();
             setIsMediaRecording(false);
@@ -128,6 +148,7 @@ const RecordAndPlayAudio: React.FC = () => {
 
         setIsSpeechRecording(true);
         setIsSpeechPaused(false);
+      }
     };
 
     const handleStopSpeechRecognition = () => {

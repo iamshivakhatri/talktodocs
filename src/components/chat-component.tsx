@@ -130,6 +130,7 @@ const ChatComponent = ({chatId, isPro, numberOfMessages}: Props) => {
           <Button
             type="submit"
             className="ml-2 px-4 py-2 bg-gray-600 text-white rounded-lg"
+            variant={"price"}
           >
             <Send className="w-4 h-4" />
           </Button>

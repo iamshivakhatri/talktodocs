@@ -3,7 +3,7 @@ import { DrizzleChat } from "@/lib/db/schema";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
-import { MessageCircle, PlusCircle, MoreVertical, Delete, PenTool } from "lucide-react";
+import { MessageCircle, PlusCircle, MoreVertical, Delete, PenTool, FileText } from "lucide-react";
 import axios from "axios";
 import { DeleteModal } from "./modals/delete-modal";
 import toast from "react-hot-toast";
@@ -131,7 +131,7 @@ const ChatSideBar = ({ chats, chatId, fileKey, isPro, numberOfMessages }: Props)
       />
 
       <div className="w-full h-full p-4 text-gray-900 flex flex-col">
-        <Button className="w-full mb-4" onClick={handleUpload}>
+        <Button className="w-full mb-4" onClick={handleUpload} variant={"price"}>
           <PlusCircle className="w-6 h-6 mr-2" />
           Create new chat
         </Button>
@@ -154,7 +154,7 @@ const ChatSideBar = ({ chats, chatId, fileKey, isPro, numberOfMessages }: Props)
                   }`}
                 >
                   <div className="flex items-center flex-grow overflow-hidden">
-                    <MessageCircle className="w-6 h-6 mr-2 flex-shrink-0" />
+                    <FileText className="w-6 h-6 mr-2 flex-shrink-0" />
                     <p className="text-sm truncate">{chat.pdfName}</p>
                   </div>
                   <button

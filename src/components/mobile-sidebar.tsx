@@ -33,11 +33,7 @@ const MobileSidebar = ({chats, isPro,  numberOfMessages }:MobileSidebarProps )=>
     if (!isMounted) return null;
 
     if (!chatId) {
-        return (
-            <div>
-                No Valid Chat Id selected.
-            </div>
-        );
+        return 
     }
 
     if(!fileKey){

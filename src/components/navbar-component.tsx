@@ -14,10 +14,13 @@ import RecordAndPlayAudio from "./record-and-play-audio";
 
 
 
+
+
 type Props = {
 };
 
 const NavbarComponent =async () => {
+
   
   const { userId }: { userId: string | null } = auth();
   if (!userId) {
@@ -52,7 +55,7 @@ const NavbarComponent =async () => {
       </div>
 
       <div>
-        <RecordAndPlayAudio />
+        <RecordAndPlayAudio isPro={isPro} numberOfMessages={numberOfMessages}/>
       </div>
 
 

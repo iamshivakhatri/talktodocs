@@ -41,11 +41,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
   // console.log("This is _chats after deletion", _chats);
 
   if (_chats.length === 0 || !_chats) {
-    return(
-      <div>
-        No chat found
-      </div>
-    )
+    redirect("/main");
   }
   // const fileKey = _chats[0].fileKey;
 
@@ -56,7 +52,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
   if(!currentChat){
     currentChat = _chats[_chats.length - 1];
     if (!currentChat) {
-      return <div>No chat found</div>;
+      redirect("/main")
     }
     chatId = currentChat.id.toString();
   //  _chats = await db.select().from(chats).where(eq(chats.userId, userId)); 

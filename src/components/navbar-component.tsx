@@ -36,11 +36,7 @@ const NavbarComponent =async () => {
 
   
   if (_chats.length === 0 || !_chats) {
-    return(
-      <div>
-        No chat found
-      </div>
-    )
+    return
   }
   // const fileKey = await db.select().from(chats).where(eq(chats.id, ))
   // const fileKey = _chats[0].fileKey;

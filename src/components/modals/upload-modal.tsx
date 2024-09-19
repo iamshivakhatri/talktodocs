@@ -20,6 +20,7 @@ interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
   loading: boolean;
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type FileDetails = {
@@ -31,6 +32,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   isOpen,
   onClose,
   loading,
+  setLoading, // optional prop only to update the navbar at the first chat
 }) => {
   // const isPro = await  checkSubscription();
   // let numberOfMessages = await apiLimit();
@@ -76,7 +78,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
           onSuccess: ({ chatId }) => {
             toast.success("Chat has been created");
             router.push(`/chat/${chatId}`);
-            onClose(); // Close the modal on success
+            setLoading?.(true);
           },
           onError: (error) => {
             console.error(error);

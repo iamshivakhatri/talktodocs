@@ -13,6 +13,10 @@ export const apiLimit = async () => {
     }).from(messageRecords).where(eq(messageRecords.userId, userId));
     console.log("messageNumber in the api route.", messageNumber);
 
+    if (messageNumber.length === 0 || !messageNumber) {
+        return 0;
+    }
+
     return messageNumber[0].numberOfMessages;
 }
 

@@ -1,12 +1,19 @@
 "use client";
 
-import {useAuth} from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import TypewriterComponent from "typewriter-effect";
+import { db } from "@/lib/db";
+import { chats } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
+import { useRouter } from 'next/navigation'
+import { useAuth } from "@clerk/nextjs";
 
 const LandingHero = () => {
     const {isSignedIn} = useAuth();
+    const handleStarted = () => {
+        
+    }
 
     return ( 
         <div className="text-white font-bold py-36 text-center space-y-5">
@@ -78,7 +85,7 @@ const LandingHero = () => {
             
             <div>
                 <Link href={isSignedIn? "/main": "/signed-up"}>
-                 <Button variant="price" className="rounded-full">
+                 <Button variant="price" className="rounded-full" onClick={handleStarted}>
                     Try For Free
                 </Button>
                 </Link>

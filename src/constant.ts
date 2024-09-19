@@ -1,4 +1,4 @@
-export const MAX_FREE_COUNTS = 30;
+export const MAX_FREE_COUNTS = 40;
 
 export const embedding = [
   -0.010930763, 0.0004580362, 0.022358378, -0.01414723, -0.032687686,

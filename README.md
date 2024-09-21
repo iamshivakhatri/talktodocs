@@ -1,8 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) chat app which enables you to chat with pdf, youtube videos, audios etc. This is bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
-
-First, run the development server:
+start with npm install for downloading required packages.
+then , run the development server:
 
 ```bash
 npm run dev

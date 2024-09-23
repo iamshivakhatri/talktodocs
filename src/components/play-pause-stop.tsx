@@ -3,9 +3,7 @@ import {
   PauseCircle,
   StopCircle,
   PlayCircle,
-  Download,
   XCircle,
-  MessageCircle,
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";

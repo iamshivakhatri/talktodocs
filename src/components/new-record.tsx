@@ -2,7 +2,6 @@
 import React, { useState, useRef } from 'react';
 import { Mic, StopCircle, Download } from 'lucide-react';
 import axios from 'axios';
-import * as lamejs from '@breezystack/lamejs';
 
 
 const RecordAndPlayAudio: React.FC = () => {

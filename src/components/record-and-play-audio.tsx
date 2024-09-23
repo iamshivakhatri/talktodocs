@@ -2,7 +2,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import { Mic, PauseCircle, StopCircle, PlayCircle, Download, XCircle } from 'lucide-react';
 import PlayPauseStop from './play-pause-stop';
 import { MAX_FREE_COUNTS } from "@/constant";
 import { useProModal } from "@/hooks/use-pro-modal";

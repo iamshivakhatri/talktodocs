@@ -3,7 +3,7 @@ import { DrizzleChat } from "@/lib/db/schema";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
-import { MessageCircle, PlusCircle, MoreVertical, Delete, PenTool, FileText } from "lucide-react";
+import {  PlusCircle, MoreVertical, Delete, PenTool, FileText } from "lucide-react";
 import axios from "axios";
 import { DeleteModal } from "./modals/delete-modal";
 import toast from "react-hot-toast";

@@ -5,10 +5,8 @@ import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import PDFViewer from "@/components/pdf-viewer";
 import ChatComponent from "@/components/chat-component";
 import SummaryComponent from "@/components/summary-component";
-import NavbarComponent from "@/components/navbar-component";
 import { checkSubscription } from "@/lib/subscription";
 import { apiLimit } from "@/lib/api-limit";
 // type Props = {

@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { CheckCircleIcon } from "lucide-react";
+import FeatureShowcase from "./landing-feature";
 
 const font = Montserrat({
   weight: "600",
@@ -14,7 +15,6 @@ const testimonials = [
     name: "Harvard University",
     logo: "https://upload.wikimedia.org/wikipedia/en/thumb/3/3a/Harvard_Wreath_Logo_1.svg/1200px-Harvard_Wreath_Logo_1.svg.png",
   },
-
   {
     name: "Stanford University",
     logo: "https://upload.wikimedia.org/wikipedia/en/thumb/b/b7/Stanford_University_seal_2003.svg/1200px-Stanford_University_seal_2003.svg.png",
@@ -28,12 +28,15 @@ const testimonials = [
     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/University_of_California%2C_Berkeley_seal.svg/1200px-University_of_California%2C_Berkeley_seal.svg.png",
   },
 ];
+
 const LandingContent = () => {
   return (
     <div className="px-10 pb-20">
+      <FeatureShowcase />
+
       <h2
         className={cn(
-          "text-center text-3xl text-white font-extrabold mb-10 mt-10",
+          "text-center text-3xl text-white font-extrabold mb-10 mt-20",
           font.className
         )}
       >
@@ -49,11 +52,9 @@ const LandingContent = () => {
             <CardHeader>
               <CardTitle>
                 <div className="flex flex-col items-center text-center">
-                  {/* Custom Font and Gradient Text for Name */}
                   <p className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600">
                     {testimonial.name}
                   </p>
-                  {/* Rounded Image with Border */}
                   <img
                     src={testimonial.logo}
                     alt={testimonial.name}
@@ -63,7 +64,6 @@ const LandingContent = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="mt-4 text-center">
-              {/* Testimonial Content */}
               <p className="text-gray-600 text-sm leading-relaxed italic"></p>
             </CardContent>
           </Card>
@@ -73,7 +73,7 @@ const LandingContent = () => {
       <div>
         <h2
           className={cn(
-            "text-center text-3xl text-white font-extrabold mb-10 mt-10",
+            "text-center text-3xl text-white font-extrabold mb-10 mt-20",
             font.className
           )}
         >
@@ -86,8 +86,7 @@ const LandingContent = () => {
             <CardHeader>
               <CardTitle>
                 <div className="flex items-center">
-                  <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />{" "}
-                  {/* Tick Icon */}
+                  <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />
                   <p className="text-lg text-transparent bg-clip-text bg-teal-400">
                     Basic
                   </p>
@@ -129,8 +128,7 @@ const LandingContent = () => {
               <CardHeader>
                 <CardTitle>
                   <div className="flex items-center">
-                    <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />{" "}
-                    {/* Tick Icon */}
+                    <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />
                     <p className="text-lg text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600">
                       PRO
                     </p>

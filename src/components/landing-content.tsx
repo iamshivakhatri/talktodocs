@@ -34,16 +34,16 @@ const LandingContent = () => {
     <div className="px-10 pb-20">
       <FeatureShowcase />
 
-      <h2
+      {/* <h2
         className={cn(
           "text-center text-3xl text-white font-extrabold mb-10 mt-20",
           font.className
         )}
       >
         Trusted by people on
-      </h2>
+      </h2> */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-4/5 md:w-3/4 m-auto">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-4/5 md:w-3/4 m-auto">
         {testimonials.map((testimonial, index) => (
           <Card
             key={index}
@@ -68,7 +68,7 @@ const LandingContent = () => {
             </CardContent>
           </Card>
         ))}
-      </div>
+      </div> */}
 
       <div>
         <h2

@@ -1,8 +1,41 @@
-This is a [Next.js](https://nextjs.org/) chat app which enables you to chat with pdf, youtube videos, audios etc. This is bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Chat App with PDF, YouTube, and Audio Interactions
+
+This is a [Next.js](https://nextjs.org/) chat application that enables you to interact with PDFs, YouTube videos, and audio files through a conversational interface. The app is bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and powered by advanced AI, allowing seamless document and media interaction.
+
+## Features
+
+Here are the key features of the app:
+
+### PDF Chat Creation
+Upload any PDF and instantly create an interactive chat experience. Our advanced AI processes the content, allowing you to engage with your documents in a conversational manner.
+
+![PDF Chat Creation](https://i.imgur.com/wEgjJsF.gif)
+
+### YouTube Video Insights
+Enter a YouTube URL to generate a chat based on the video content. Our system analyzes the audio and provides a chat interface to discuss and explore the video's content in depth.
+
+![YouTube Video Insights](https://i.imgur.com/Nnc9qWU.gif)
+
+### Audio to Chat Conversion
+Record or upload audio to create a chat interface for easy interaction. Perfect for podcasts, lectures, or any audio content you want to explore through conversation.
+
+![Audio to Chat Conversion](https://i.imgur.com/JM0WP59.gif)
 
 ## Getting Started
-start with npm install for downloading required packages.
-then , run the development server:
+
+First, install the required packages:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev

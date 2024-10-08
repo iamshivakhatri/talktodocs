@@ -199,7 +199,7 @@ const ChatSideBar = ({ chats, chatId, fileKey, isPro, numberOfMessages }: Props)
         </div>
 
         <div className="mt-auto pt-4">
-          <FreeCounter numberOfMessages={numberOfMessages} isPro={isPro} />
+          <FreeCounter isPro={isPro} />
         </div>
       </div>
     </>

@@ -4,17 +4,20 @@ import { Button } from "./ui/button";
 import { useChat } from "ai/react";
 import { Send } from "lucide-react";
 import MessageList from "./message-list";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Message} from "ai";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { apiLimit } from "@/lib/api-limit";
+import { useChat as useNum } from "@/context/chat-provider";
+
 
 
 type Props = {
   chatId: number,
   isPro: boolean,
-  numberOfMessages: number
+  numberOfMessages?: number
 
 };
 
@@ -33,8 +36,9 @@ type CompletionTokenUsage = {
 
 
 
-const ChatComponent = ({chatId, isPro, numberOfMessages}: Props) => {
+const ChatComponent = ({chatId, isPro}: Props) => {
   const [shouldSubmit, setShouldSubmit] = React.useState(false); // New flag state
+  const {incrementMessages, numberOfMessages} = useNum(); 
   
 
   
@@ -61,6 +65,8 @@ const ChatComponent = ({chatId, isPro, numberOfMessages}: Props) => {
           proModal.onOpen();
           console.error("Error with the API call:", response);
           return;
+      } else if(response.status == 200){
+        incrementMessages();
       }
   },
 
@@ -109,13 +115,14 @@ const ChatComponent = ({chatId, isPro, numberOfMessages}: Props) => {
 
 
       <form
-        onSubmit={(e) => {
+        onSubmit={ async (e)  => {
           e.preventDefault();
           if (input.length > 500) { // Set your desired character limit
             alert('Input is too large. Please limit your question to 500 characters.');
             return;
           }
           handleSubmit(e); // Proceed with form submission
+
         }}
         className="bg-gray-100 p-4 border-t"
       >

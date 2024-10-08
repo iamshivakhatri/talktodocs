@@ -16,6 +16,8 @@ import { checkSubscription } from "@/lib/subscription";
 import { apiLimit } from "@/lib/api-limit";
 import {MAX_FREE_COUNTS} from "@/constant";
 
+
+
 export const maxDuration = 30; // 
 
 // dotenv.config();
@@ -32,6 +34,9 @@ export async function POST(req: Request) {
     if(!numberOfMessages){
       numberOfMessages = 0;
     }
+
+    
+
     try {
 
         const {userId}: {userId: string | null} = auth();
@@ -40,7 +45,7 @@ export async function POST(req: Request) {
 
 
         }
-        const messageLimit = MAX_FREE_COUNTS || 9 // Set a default limit
+        const messageLimit = MAX_FREE_COUNTS || 17                                               // Set a default limit
 
 
         if (!isPro && numberOfMessages >= messageLimit) {
@@ -129,6 +134,7 @@ export async function POST(req: Request) {
                     })
                     .where(eq(messageRecords.userId, userId));
                 console.log("Updated existing record");
+     
             } else {
                 // If record does not exist, insert a new record
                 await db.insert(messageRecords).values({
@@ -136,6 +142,7 @@ export async function POST(req: Request) {
                     numberOfMessages: 1, // Start with 1 message
                 });
                 console.log("Inserted new record");
+                
             }
 
             },

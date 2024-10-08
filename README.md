@@ -9,17 +9,19 @@ Here are the key features of the app:
 ### PDF Chat Creation
 Upload any PDF and instantly create an interactive chat experience. Our advanced AI processes the content, allowing you to engage with your documents in a conversational manner.
 
-![PDF Chat Creation](https://i.imgur.com/wEgjJsF.gif)
+<img src='https://i.imgur.com/wEgjJsF.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ### YouTube Video Insights
 Enter a YouTube URL to generate a chat based on the video content. Our system analyzes the audio and provides a chat interface to discuss and explore the video's content in depth.
 
-![YouTube Video Insights](https://i.imgur.com/Nnc9qWU.gif)
+<img src='https://i.imgur.com/Nnc9qWU.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
 
 ### Audio to Chat Conversion
 Record or upload audio to create a chat interface for easy interaction. Perfect for podcasts, lectures, or any audio content you want to explore through conversation.
 
-![Audio to Chat Conversion](https://i.imgur.com/JM0WP59.gif)
+<img src='https://i.imgur.com/JM0WP59.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
 
 ## Getting Started
 

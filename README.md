@@ -9,18 +9,18 @@ Here are the key features of the app:
 ### PDF Chat Creation
 Upload any PDF and instantly create an interactive chat experience. Our advanced AI processes the content, allowing you to engage with your documents in a conversational manner.
 
-<img src='https://i.imgur.com/wEgjJsF.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='src/gif/pdf.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ### YouTube Video Insights
 Enter a YouTube URL to generate a chat based on the video content. Our system analyzes the audio and provides a chat interface to discuss and explore the video's content in depth.
 
-<img src='https://i.imgur.com/Nnc9qWU.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='src/gif/youtube.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 ### Audio to Chat Conversion
 Record or upload audio to create a chat interface for easy interaction. Perfect for podcasts, lectures, or any audio content you want to explore through conversation.
 
-<img src='https://i.imgur.com/JM0WP59.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='src/gif/audio.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 ## Getting Started
@@ -50,6 +50,7 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<!-- <blockquote class="imgur-embed-pub" lang="en" data-id="wEgjJsF"><a href="https://imgur.com/wEgjJsF.gif">View post on imgur.com</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script> -->
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

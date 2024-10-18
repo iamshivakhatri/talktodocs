@@ -9,7 +9,6 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Message} from "ai";
 import { useProModal } from "@/hooks/use-pro-modal";
-import { apiLimit } from "@/lib/api-limit";
 import { useChat as useNum } from "@/context/chat-provider";
 
 

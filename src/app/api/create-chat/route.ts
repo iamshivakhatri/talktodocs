@@ -5,7 +5,6 @@ import { db } from "@/lib/db";
 import { getS3Url } from "@/lib/s3";
 import { auth } from "@clerk/nextjs/server";
 import { chats } from "@/lib/db/schema";
-import { get } from "http";
 
 
 export async function POST(req: Request, res:Response){

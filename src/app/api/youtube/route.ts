@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { YoutubeTranscript } from 'youtube-transcript';
-import { detect } from 'langdetect';
 import { toast } from 'react-hot-toast';
 
 export const runtime = 'edge';

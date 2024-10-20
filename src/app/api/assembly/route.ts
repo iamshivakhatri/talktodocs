@@ -91,8 +91,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export const runtime = 'nodejs'; // Use node.js runtime (or 'edge' if needed)
+export const dynamic = 'force-dynamic'; // Force dynamic rendering for the API
+export const revalidate = false; // Disable revalidation for this route

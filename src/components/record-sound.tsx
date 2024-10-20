@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-
 import { Mic, PauseCircle, StopCircle, PlayCircle } from 'lucide-react';
 
 type Props = {};
@@ -66,7 +65,7 @@ const RecordSound = (props: Props) => {
     };
 
     if (!browserSupportsSpeechRecognition) {
-        return <span>Browser doesn't support speech recognition.</span>;
+        return <span>Browser doesn&apos;t support speech recognition.</span>;
     }
 
     return (
@@ -100,7 +99,7 @@ const RecordSound = (props: Props) => {
                     <p className='text-black'>{transcript}</p>
                 </div>
             )}
-        </div> 
+        </div>
     );
 };
 

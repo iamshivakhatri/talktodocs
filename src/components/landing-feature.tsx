@@ -1,25 +1,32 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Image from 'next/image'; // Import Next.js Image component
 
 const features = [
   {
     title: "PDF Chat Creation",
     description: "Upload any PDF and instantly create an interactive chat experience. Our advanced AI processes the content, allowing you to engage with your documents in a conversational manner.",
     imageSrc: "https://i.imgur.com/wEgjJsF.gif", // Placeholder for GIF
-    alt: "PDF to Chat Conversion"
+    alt: "PDF to Chat Conversion",
+    width: 800,
+    height: 600,
   },
   {
     title: "YouTube Video Insights",
     description: "Enter a YouTube URL to generate a chat based on the video content. Our system analyzes the audio and provides a chat interface to discuss and explore the video's content in depth.",
     imageSrc: "https://i.imgur.com/Nnc9qWU.gif", // Placeholder for GIF
-    alt: "YouTube URL to Chat"
+    alt: "YouTube URL to Chat",
+    width: 800,
+    height: 600,
   },
   {
     title: "Audio to Chat Conversion",
     description: "Record or upload audio to create a chat interface for easy interaction. Perfect for podcasts, lectures, or any audio content you want to explore through conversation.",
     imageSrc: "https://i.imgur.com/JM0WP59.gif", // Placeholder for GIF
-    alt: "Audio Recording to Chat"
+    alt: "Audio Recording to Chat",
+    width: 800,
+    height: 600,
   }
 ];
 
@@ -35,10 +42,13 @@ const FeatureShowcase = () => {
             <Card key={index} className="overflow-hidden shadow-lg border-0 bg-slate-200">
               <div className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                 <div className="md:w-3/4">
-                  <img
-                    className="h-64 w-full object-cover md:h-full"
+                  <Image
+                    className="object-cover"
                     src={feature.imageSrc}
                     alt={feature.alt}
+                    width={feature.width}
+                    height={feature.height}
+                    layout="responsive" // This helps with responsive images
                   />
                 </div>
                 <CardContent className="p-8 md:w-1/2 flex flex-col justify-center bg-[#212939]">

@@ -1,7 +1,3 @@
-import { Configuration, OpenAIApi } from 'openai-edge';
-// import { CoreMessage, streamText } from 'ai';
-
-
 
 import { db } from '@/lib/db';
 import {  messages as _messages, summary as _summary } from '@/lib/db/schema';

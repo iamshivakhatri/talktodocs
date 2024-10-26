@@ -4,44 +4,80 @@ import path from "path";
 
 import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 
-
 export async function downloadFromS3(fileKey: string) {
-    try{
-        AWS.config.update({
-            accessKeyId:process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
-            secretAccessKey:process.env.NEXT_PUBLIC_S3_SECRET_KEY,
-        });
-        const s3 = new AWS.S3({
-            params: {
-                Bucket: 'sk-chat-app-storage',
-            },
-            region: 'us-east-2',
-            }
-        );
+  try {
+      AWS.config.update({
+          accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
+          secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_KEY,
+      });
+      
+      const s3 = new AWS.S3({
+          params: {
+              Bucket: 'sk-chat-app-storage',
+          },
+          region: 'us-east-2',
+      });
 
-        const params = {
-            Bucket: 'sk-chat-app-storage',
-            Key: fileKey,
-        }
+      const params = {
+          Bucket: 'sk-chat-app-storage',
+          Key: fileKey,
+      };
 
-        const obj = await s3.getObject(params).promise();
-        console.log("Object from S3", obj);
-        const dir = 'tmp';
-        if (!fs.existsSync(dir)){
-            fs.mkdirSync(dir);
-        }
+      const obj = await s3.getObject(params).promise();
+      console.log("Object from S3", obj);
 
-        const fileName = path.join(dir, `pdf-${Date.now()}.pdf`);
-        fs.writeFileSync(fileName, obj.Body as Buffer);
+      // Use /tmp directory, which is writable in Lambda
+      const dir = '/tmp';
+      const fileName = path.join(dir, `pdf-${Date.now()}.pdf`);
+      
+      // Write the file to the /tmp directory
+      fs.writeFileSync(fileName, obj.Body as Uint8Array);
+      console.log(`File saved successfully at ${fileName}`);
 
-        console.log(`File saved successfully at ${fileName}`);
-        return fileName;
+      return fileName;
 
-    }catch(error){
-        console.error(error);
-    }
-    
+  } catch (error) {
+      console.error("Error downloading file from S3:", error);
+  }
 }
+
+// export async function downloadFromS3(fileKey: string) {
+//     try{
+//         AWS.config.update({
+//             accessKeyId:process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
+//             secretAccessKey:process.env.NEXT_PUBLIC_S3_SECRET_KEY,
+//         });
+//         const s3 = new AWS.S3({
+//             params: {
+//                 Bucket: 'sk-chat-app-storage',
+//             },
+//             region: 'us-east-2',
+//             }
+//         );
+
+//         const params = {
+//             Bucket: 'sk-chat-app-storage',
+//             Key: fileKey,
+//         }
+
+//         const obj = await s3.getObject(params).promise();
+//         console.log("Object from S3", obj);
+//         const dir = 'tmp';
+//         if (!fs.existsSync(dir)){
+//             fs.mkdirSync(dir);
+//         }
+
+//         const fileName = path.join(dir, `pdf-${Date.now()}.pdf`);
+//         fs.writeFileSync(fileName, obj.Body as Buffer);
+
+//         console.log(`File saved successfully at ${fileName}`);
+//         return fileName;
+
+//     }catch(error){
+//         console.error(error);
+//     }
+    
+// }
 
 // export async function deleteFromS3(fileKey:string){
 //     try{

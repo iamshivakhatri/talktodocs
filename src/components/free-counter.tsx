@@ -7,8 +7,8 @@ import { Progress } from "./ui/progress";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
-import axios from "axios";
 import { useChat as useNum } from "@/context/chat-provider";
+import { Modal } from "@/components/ui/modal";
 
 
 interface FreeCounterProps {
@@ -19,6 +19,8 @@ interface FreeCounterProps {
 export const FreeCounter = ({  isPro = false }: FreeCounterProps) => {
   const [mounted, setMounted] = useState(false);
   const proModal = useProModal();
+  const [showModal, setShowModal] = useState(false); // New state to control modal
+
   
   const {incrementMessages, numberOfMessages} = useNum(); 
 
@@ -42,8 +44,9 @@ export const FreeCounter = ({  isPro = false }: FreeCounterProps) => {
 
   const handleSubscription = async () => {
     try {
-      const response = await axios.get('/api/stripe');
-      window.location.href = response.data.url;
+      // const response = await axios.get('/api/stripe');
+      // window.location.href = response.data.url;
+      setShowModal(true);
     } catch (e) {
       console.error(e);
     }
@@ -63,6 +66,28 @@ export const FreeCounter = ({  isPro = false }: FreeCounterProps) => {
           </Button>
         </CardContent>
       </Card>
+
+      {showModal && (
+        <Modal
+          isOpen={showModal} // Ensures the modal is open based on showModal state
+          onClose={() => setShowModal(false)}
+          title="Upgrade Information"
+          description="Information about the upgrade feature"
+        >
+          <p className="text-teal-900 p-4 rounded-lg">
+          <span className="font-semibold text-teal-900">Heads up!</span> This upgrade feature is still in the testing phase, 
+          as this project remains a hobby for now. Going live with upgrades will require additional resources, so payments aren’t 
+          being accepted yet. There is a stripe integration in place.
+          <br /><br />
+          If you're interested in upgrading or have feature suggestions, there is a stripe integration in place so feel free to reach out at{" "}
+          <a href="mailto:shiva.khatri01@gmail.com" className="text-teal-900 underline">
+            shiva.khatri01@gmail.com
+          </a>.
+        </p>
+
+        </Modal>
+      )}
+
     </div>
   );
 };
